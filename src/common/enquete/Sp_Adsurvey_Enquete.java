@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import excute.bean.AccountBean;
+
 /**
  * =====================================================================================================================
  * 共通(携帯)：Adsurveyアンケート
@@ -33,34 +35,37 @@ public class Sp_Adsurvey_Enquete {
 	 * @author kimC
 	 *
 	 */
-	public static Boolean execute(WebDriver driver) throws Exception{
+	public static Boolean execute(WebDriver driver, AccountBean bean) throws Exception{
 		// 0.5秒待ち
 		Thread.sleep(500);
+		if(check(driver)){
+			return Boolean.TRUE;
+		}
 		// 「次へ」ボタン
 		driver.findElement(By.xpath("//input[@value='次へ']")).click();
 		// 0.5秒待ち
 		Thread.sleep(500);
-		// 「性別」（男）
-		driver.findElement(By.id(CHO_1)).click();
+		// 「性別」
+		driver.findElements(By.name("question_1")).get(getIndex(bean.getSex())).click();
 		// 「次へ」ボタン
 		driver.findElement(By.className(C_BTN)).click();
 		// 0.5秒待ち
 		Thread.sleep(500);
 		// 「年齢」（30代）
-		driver.findElement(By.id(CHO_5)).click();
+		driver.findElements(By.name("question_2")).get(getAgeGroup(bean.getYear())).click();
 		// 「次へ」ボタン
 		driver.findElement(By.className(C_BTN)).click();
 		// 0.5秒待ち
 		Thread.sleep(500);
 		// 「職業」（会社員）
-		driver.findElement(By.id(CHO_11)).click();
+		driver.findElements(By.name("question_3")).get(int_random(12)).click();
 		// 「次へ」ボタン
 		driver.findElement(By.className(C_BTN)).click();
 		// 0.5秒待ち
 		Thread.sleep(500);
 		// 「住まい」（大阪）
 		Select select = new Select(driver.findElement(By.name(QUE_4)));
-		select.selectByIndex(27);
+		select.selectByIndex(getPrefList().indexOf(bean.getPref()) + 1);
 		// 「次へ」ボタン
 		driver.findElement(By.className(C_BTN)).click();
 		// 0.5秒待ち
@@ -96,6 +101,28 @@ public class Sp_Adsurvey_Enquete {
 		}
 
 		return Boolean.TRUE;
+	}
+
+	/**
+	 * =================================================================================================================
+	 * (携帯)Adsurveyアンケート
+	 * =================================================================================================================
+	 *
+	 * @param WebDriver driver
+	 * @return execute_flag
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static Boolean check(WebDriver driver) throws Exception{
+		Boolean flag = Boolean.FALSE;
+		try{
+			if(driver.findElements(By.className("attention_txt")).size() > 0){
+				flag =  Boolean.TRUE;
+			}
+		}catch (Exception e){
+		}
+		return flag;
 	}
 
 }

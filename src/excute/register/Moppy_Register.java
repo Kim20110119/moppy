@@ -1,5 +1,6 @@
 package excute.register;
 
+import static common.Common.*;
 import static common.constant.MoppyConstants.*;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import excute.bean.RegisterBean;
+import excute.bean.AccountBean;
+import excute.research.Moppy_Research;
 
 /**
  * =====================================================================================================================
@@ -25,7 +27,7 @@ public class Moppy_Register{
 	/** 「WEBドライバー」 */
 	WebDriver driver;
 	/** 「アカウントBean」 */
-	RegisterBean bean = new RegisterBean();
+	AccountBean bean = new AccountBean();
 	/** 「診断URL」 */
 	String shindan_url  = StringUtils.EMPTY;
 	/** 「獲得ポイント」 */
@@ -55,7 +57,7 @@ public class Moppy_Register{
 	 * @author kimC
 	 *
 	 */
-	public Integer execute(List<RegisterBean> list) {
+	public Integer execute(List<AccountBean> list) {
 		for (int i = 0; i < list.size(); i++) {
 			// アカウントBean
 			bean = list.get(i);
@@ -66,9 +68,9 @@ public class Moppy_Register{
 			// 0.5秒待ち
 			sleep(500);
 			// 仮登録
-//			if(!this.register(getMailList().get(i))){
-//				break;
-//			}
+			if(!this.register(getMailList().get(i))){
+				break;
+			}
 			// メール確認
 			if(!this.mail_confirm()){
 				break;
@@ -79,15 +81,7 @@ public class Moppy_Register{
 			}
 			// メールからアクセス
 			this.mail_access();
-
-			// 3秒待ち
-			sleep(3000);
-			driver.get("http://www.chance.com/research/");
-			// 3秒待ち
-			sleep(3000);
-			String shindan_list_url = driver.findElement(By.id("research_movie")).findElement(By.tagName("a")).getAttribute("href");
-			driver.get(shindan_list_url);
-
+			// Wifiを再起動
 			this.wifiRestart();
 			// ブラウザを終了する
 			driver.quit();
@@ -163,8 +157,11 @@ public class Moppy_Register{
 			jse.executeScript("location.href='recv.php';");
 			// 1秒待ち
 			sleep(1000);
+			// メールIDを取得する
 			String mail_id = driver.findElements(By.className("ui-listview")).get(1).findElement(By.tagName("li")).getAttribute("id");
+			// メール番号を取得する
 			String mail_num = mail_id.split("_", 0)[2];
+			// メール詳細URLを取得する
 			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=a73ac4dcc47e2fb4827d093a9416c679&num=" + mail_num + "&detailmode=1";
 			// メール内容詳細参照用ドライバー
 			WebDriver mail_detail = new ChromeDriver();
@@ -172,7 +169,9 @@ public class Moppy_Register{
 			mail_detail.get(mail_detail_url);
 			// 「トラフィック」仮登録用URLを取得する
 			String moppy_register_url = mail_detail.findElement(By.partialLinkText("https://ssl.pc.moppy.jp/entry/regist_form.php")) .getText();
+			// メール詳細ドライバーを終了する
 			mail_detail.quit();
+			// モッピー会員登録画面へ遷移する
 			driver.get(moppy_register_url);
 			return Boolean.TRUE;
 		} catch (Exception e) {
@@ -201,7 +200,7 @@ public class Moppy_Register{
 			// パスワード確認
 			driver.findElement(By.name("repassword")).sendKeys(bean.getPassword());
 			// 性別
-			driver.findElements(By.name("sex")).get(this.getIndex(bean.getSex())).click();
+			driver.findElements(By.name("sex")).get(getIndex(bean.getSex())).click();
 			// 年
 			Select year = new Select(driver.findElement(By.name("birthday_y")));
 			year.selectByValue(bean.getYear());
@@ -212,10 +211,10 @@ public class Moppy_Register{
 			Select pref = new Select(driver.findElement(By.name("pref")));
 			pref.selectByVisibleText(bean.getPref());
 			// 未既婚
-			driver.findElements(By.name("is_married")).get(this.getIndex(bean.getMarried())).click();
+			driver.findElements(By.name("is_married")).get(getIndex(bean.getMarried())).click();
 			// 秘密の質問
 			Select codeid = new Select(driver.findElement(By.name("codeid")));
-			codeid.selectByVisibleText(bean.getCodeid());
+			codeid.selectByValue(bean.getCodeid());
 			// 秘密の答え
 			driver.findElement(By.name("codeword")).sendKeys(bean.getCodeword());
 			// 「利用規約に同意して確認画面へ」
@@ -273,6 +272,28 @@ public class Moppy_Register{
 
 	/**
 	 * =================================================================================================================
+	 * モッピー：メールリンクからアクセス
+	 * =================================================================================================================
+	 *
+	 * @return Boolean 処理結果
+	 *
+	 * @author kimC
+	 *
+	 */
+	public Boolean research() {
+		try {
+			Moppy_Research research = new Moppy_Research();
+			research.execute(bean, Boolean.FALSE);
+			return Boolean.TRUE;
+		} catch (Exception e) {
+			System.out.println("【エラー】：モッピーアクセスメール獲得失敗");
+			return Boolean.FALSE;
+		}
+
+	}
+
+	/**
+	 * =================================================================================================================
 	 * Wifi再起動
 	 * =================================================================================================================
 	 *
@@ -286,23 +307,6 @@ public class Moppy_Register{
 		sleep(100000);
 		driver.switchTo().alert().accept();
 	}
-
-	/**
-	 * =================================================================================================================
-	 * 文字列を数字に変換する
-	 * =================================================================================================================
-	 *
-	 * @author kimC
-	 *
-	 */
-	public Integer getIndex(String value) {
-		Integer i = 0;
-		if(StringUtils.isNoneEmpty(value)){
-			i = Integer.parseInt(value);
-		}
-		return i;
-	}
-
 
 	/**
 	 * sleep処理

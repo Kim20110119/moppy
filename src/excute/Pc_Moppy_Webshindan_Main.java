@@ -1,5 +1,7 @@
 package excute;
 
+import excute.bean.AccountBean;
+import excute.excel.Account;
 import excute.shindan.Moppy_Shindan;
 
 /**
@@ -11,11 +13,14 @@ import excute.shindan.Moppy_Shindan;
  *
  */
 public class Pc_Moppy_Webshindan_Main {
-
+	// モッピー：WEB診断
 	public static void main(String[] args) {
 		Moppy_Shindan moppy_Shindan = new Moppy_Shindan();
-		int reados_point = moppy_Shindan.execute();
-		System.out.println(reados_point);
+		Account account = new Account();
+		for(AccountBean bean : account.execute()){
+			moppy_Shindan.execute(bean, Boolean.TRUE);
+		}
+		System.out.println("【モッピー】：WEB診断終了。");
 	}
 
 }

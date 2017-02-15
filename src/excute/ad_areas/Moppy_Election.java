@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 
 import excute.Pc_Moppy;
+import excute.bean.AccountBean;
 
 
 
@@ -30,13 +31,17 @@ public class Moppy_Election extends Pc_Moppy {
 	Boolean restart_flag = Boolean.FALSE;
 	/** 「アンケート件数」 */
 	int enquete_count = 0;
+	/** 「開始Index」 */
+	int start = 0;
+	/** 「終了Index」 */
+	int end = 200;
+	/** 「アカウント情報」 */
+	AccountBean bean = new AccountBean();
 
 	/**
 	 * コンストラクタ
 	 */
 	public Moppy_Election() {
-		// 「CMくじ」
-		driver.get(PC_CM_URL);
 	}
 
 	/**
@@ -49,8 +54,21 @@ public class Moppy_Election extends Pc_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public Integer execute() {
+	public Integer execute(AccountBean pBean, Boolean loginFlag) {
 		try {
+			this.bean = pBean;
+			if(loginFlag){
+				// モッピー：ログイン画面
+				driver.get(PC_LOGIN_URL);
+				// モッピー：ログインメールアドレス
+				sendkeysByStr(getByName(V_MAIL), bean.getMail());
+				// モッピー：ログインパスワード
+				sendkeysByStr(getByName(V_PASS), bean.getPassword());
+				// モッピー：ログインボタン
+				click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
+			}
+			// 「CMくじ」
+			driver.get(PC_CM_URL);
 			// 「クマクマ総選挙URL」取得する
 			election_url = driver.findElement(By.className(C_D_P)).findElements(By.tagName(T_A)).get(5)
 					.getAttribute(A_HREF);
@@ -68,7 +86,7 @@ public class Moppy_Election extends Pc_Moppy {
 				// 「投票画面」
 				driver.findElement(By.className("select__list")).findElements(By.tagName(T_A)).get(0).click();
 				// 投票処理をする
-				for (int i = 0; i < 500; i++) {
+				for (int i = start; i < end; i++) {
 					start();
 					if (restart_flag) {
 						// 「クマクマ総選挙画面」

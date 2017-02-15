@@ -10,7 +10,7 @@ import excute.enquete.Moppy_Enquete;
  * @author kimC
  *
  */
-public class Pc_Moppy_EnqueteMain {
+public class Pc_Moppy_Enquete_Main {
 
 	public static void main(String[] args) {
 		// モッピー：アンケート

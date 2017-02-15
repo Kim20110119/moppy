@@ -6,7 +6,6 @@ import static common.constant.MoppyConstants.*;
 
 import org.openqa.selenium.By;
 
-import common.enquete.Adsurvey_Enquete;
 import common.enquete.Column_Enquete;
 import common.enquete.Mini_Survey_Enquete;
 import excute.Pc_Moppy;
@@ -105,7 +104,7 @@ public class Moppy_Enquete extends Pc_Moppy {
 	 */
 	public void ad_start() {
 		try {
-			Adsurvey_Enquete.execute(driver);
+//			Adsurvey_Enquete.execute(driver);
 			point_count += 5;
 		} catch (Exception e) {
 			System.out.println("【エラー】：ADアンケートスタート失敗");

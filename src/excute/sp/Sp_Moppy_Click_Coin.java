@@ -7,7 +7,8 @@ import static common.constant.MoppyConstants.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import excute.Sp_Moppy;
+import common.Sp_Point;
+import excute.bean.AccountBean;
 
 /**
  * =====================================================================================================================
@@ -17,7 +18,7 @@ import excute.Sp_Moppy;
  * @author kimC
  *
  */
-public class Sp_Moppy_Click_Coin  extends Sp_Moppy {
+public class Sp_Moppy_Click_Coin  extends Sp_Point {
 	/** 「cc__bnr」 */
 	private static final String C_C_B = "cc__bnr";
 	/** 「cc-btn」 */
@@ -26,25 +27,15 @@ public class Sp_Moppy_Click_Coin  extends Sp_Moppy {
 	private static final String C_D = "data";
 	/** 「ts-nink」 */
 	private static final String I_T_N = "ts-nink";
-
-	/** 「毎日クリックコインURL」 */
-	String shindan_link;
 	/** 「獲得ポイント」 */
 	int point_count = 0;
-	/** 「毎日クリックコイン開始番号」 */
-	int start = 0;
-	/** 「毎日クリックコイン終了番号」 */
-	int end = 11;
-	/** 「毎日クリックコインURL」 */
-	String sindan_url;
+	/** 「アカウント情報」 */
+	AccountBean bean = new AccountBean();
 
 	/**
 	 * コンストラクタ
 	 */
 	public Sp_Moppy_Click_Coin() {
-		// TODO 携帯版未実装
-		// 「毎日クリックコイン」
-		driver.get(PC_CLICK_COIN_URL);
 	}
 
 	/**
@@ -57,22 +48,41 @@ public class Sp_Moppy_Click_Coin  extends Sp_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public Integer execute() {
-
-		// モッピー画面のタブ名を取得する
-		String original = driver.getWindowHandle();
-		ad_close(driver);
-		for(int i = 0; i < 100; i++){
+	public Integer execute(AccountBean pBean, Boolean loginFlag) {
+		try {
+			this.bean = pBean;
+			if(loginFlag){
+				// モッピー：ログイン画面
+				driver.get(PC_LOGIN_URL);
+				// モッピー：ログインメールアドレス
+				sendkeysByStr(getByName(V_MAIL), bean.getMail());
+				// モッピー：ログインパスワード
+				sendkeysByStr(getByName(V_PASS), bean.getPassword());
+				// モッピー：ログインボタン
+				click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
+			}
+			// TODO 携帯版未実装
+			// 「毎日クリックコイン」
+			driver.get(PC_CLICK_COIN_URL);
 			// モッピー画面のタブ名を取得する
-			String originalHandel = driver.getWindowHandle();
-			click(originalHandel);
-			// タブをクリックする
-			tab_close(driver,originalHandel);
-			point_count++;
+			String original = driver.getWindowHandle();
+			ad_close(driver);
+			for(int i = 0; i < 100; i++){
+				// モッピー画面のタブ名を取得する
+				String originalHandel = driver.getWindowHandle();
+				click(originalHandel);
+				// タブをクリックする
+				tab_close(driver,originalHandel);
+				point_count++;
+			}
+			one_click(original);
+			driver.quit();
+			return point_count/10;
+		} catch (Exception e) {
+			driver.quit();
+			System.out.println("【エラー】：WEB診断失敗(携帯版)");
+			return point_count;
 		}
-		one_click(original);
-		driver.quit();
-		return point_count/10;
 	}
 
 	/**

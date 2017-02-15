@@ -7,7 +7,8 @@ import static common.constant.MoppyConstants.*;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 
-import excute.Sp_Moppy;
+import common.Sp_Point;
+import excute.bean.AccountBean;
 
 /**
  * =====================================================================================================================
@@ -17,7 +18,7 @@ import excute.Sp_Moppy;
  * @author kimC
  *
  */
-public class Sp_Moppy_Election extends Sp_Moppy {
+public class Sp_Moppy_Election extends Sp_Point {
 	/** 「daily-points」 */
 	private static final String C_D_P = "sp_election";
 	/** 「クマクマ総選挙URL」 */
@@ -28,13 +29,17 @@ public class Sp_Moppy_Election extends Sp_Moppy {
 	Boolean restart_flag = Boolean.FALSE;
 	/** 「アンケート件数」 */
 	int enquete_count = 0;
+	/** 「開始Index」 */
+	int start = 0;
+	/** 「終了Index」 */
+	int end = 200;
+	/** 「アカウント情報」 */
+	AccountBean bean = new AccountBean();
 
 	/**
 	 * コンストラクタ
 	 */
 	public Sp_Moppy_Election() {
-		// 「CMくじ」
-		driver.get(PC_CM_URL);
 	}
 
 	/**
@@ -47,8 +52,21 @@ public class Sp_Moppy_Election extends Sp_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public Integer execute() {
+	public Integer execute(AccountBean pBean, Boolean loginFlag) {
 		try {
+			this.bean = pBean;
+			if(loginFlag){
+				// モッピー：ログイン画面
+				driver.get(PC_LOGIN_URL);
+				// モッピー：ログインメールアドレス
+				sendkeysByStr(getByName(V_MAIL), bean.getMail());
+				// モッピー：ログインパスワード
+				sendkeysByStr(getByName(V_PASS), bean.getPassword());
+				// モッピー：ログインボタン
+				click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
+			}
+			// 「CMくじ」
+			driver.get(PC_CM_URL);
 			// 「クマクマ総選挙URL」取得する
 			election_url = driver.findElement(By.className(C_D_P)).findElement(By.tagName(T_A)).getAttribute(A_HREF);
 			if (StringUtils.isNoneEmpty(election_url)) {
@@ -65,7 +83,7 @@ public class Sp_Moppy_Election extends Sp_Moppy {
 				// 「投票画面」
 				driver.findElement(By.className("select__list")).findElements(By.tagName(T_A)).get(0).click();
 				// 投票処理をする
-				for (int i = 0; i < 500; i++) {
+				for (int i = start; i < end; i++) {
 					start();
 					if (restart_flag) {
 						// 「クマクマ総選挙画面」
@@ -120,7 +138,7 @@ public class Sp_Moppy_Election extends Sp_Moppy {
 			// 「次の投票へ」
 			driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
 			// 1秒待ち
-			sleep(1000);
+			sleep(2000);
 		} catch (Exception e) {
 			System.out.println("【エラー】：選挙スタート失敗");
 			System.out.println("【エラー】：クマクマ総選挙遷移再スタート");

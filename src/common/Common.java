@@ -1,8 +1,11 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author お客様
@@ -44,6 +47,95 @@ public class Common {
 	}
 
 	/**
+	 * =================================================================================================================
+	 * 文字列を数字に変換する
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static Integer getIndex(String value) {
+		Integer i = 0;
+		if(StringUtils.isNoneEmpty(value)){
+			i = Integer.parseInt(value);
+		}
+		return i;
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 誕生日年から年齢を計算する（文字列年齢）
+	 * =================================================================================================================
+	 *
+	 * @param String year 年
+	 * @return String age 年齢
+	 * @author kimC
+	 *
+	 */
+	public static String getStrAge(String strYear) {
+		Integer age = 30;
+		if(StringUtils.isNoneEmpty(strYear)){
+			Calendar calendar = Calendar.getInstance();
+		    int year = calendar.get(Calendar.YEAR);
+		    age = year - Integer.valueOf(strYear);
+		}
+		return age.toString();
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 年齢帯を取得する
+	 * =================================================================================================================
+	 *
+	 * @param String year 年
+	 * @return Integer ageGroup 年齢帯
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static Integer getAgeGroup(String year) {
+		Integer age = getintAge(year);
+		Integer ageGroup = 2;
+		try{
+			if(age <= 20){
+				ageGroup = 0;
+			}else if(age > 20 && age <= 30){
+				ageGroup = 1;
+			}else if(age > 30 && age <= 40){
+				ageGroup = 2;
+			}else if(age > 40 && age <= 50){
+				ageGroup = 3;
+			}else if(age > 50 && age <= 60){
+				ageGroup = 4;
+			}else{
+				ageGroup = 5;
+			}
+		}catch (Exception e){
+		}
+		return ageGroup;
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 誕生日年から年齢を計算する（整数年齢）
+	 * =================================================================================================================
+	 *
+	 * @param String year 年
+	 * @return Integer age 年齢
+	 * @author kimC
+	 *
+	 */
+	public static Integer getintAge(String strYear) {
+		Integer age = 30;
+		if(StringUtils.isNoneEmpty(strYear)){
+			Calendar calendar = Calendar.getInstance();
+		    int year = calendar.get(Calendar.YEAR);
+		    age = year - Integer.valueOf(strYear);
+		}
+		return age;
+	}
+
+	/**
 	 * 終了メッセージを取得する処理.<BR>
 	 *
 	 * @param String
@@ -59,6 +151,68 @@ public class Common {
 	public static String get_end_message(String site, String item, int point) {
 		return "【" + site + "】：" + item + "終了。獲得ずみポイント：" + point;
 	}
+
+	/**
+	 * =====================================================================================================================
+	 * 都道府県一覧を取得する
+	 * =====================================================================================================================
+	 *
+	 * @return List<String> prefList 都道府県
+	 * @author kimC
+	 *
+	 */
+	public static List<String> getPrefList() {
+		List<String> list=new ArrayList<String>();
+		list.add("北海道");
+		list.add("青森県");
+		list.add("岩手県");
+		list.add("宮城県");
+		list.add("秋田県");
+		list.add("山形県");
+		list.add("福島県");
+		list.add("茨城県");
+		list.add("栃木県");
+		list.add("群馬県");
+		list.add("埼玉県");
+		list.add("千葉県");
+		list.add("東京都");
+		list.add("神奈川県");
+		list.add("新潟県");
+		list.add("富山県");
+		list.add("石川県");
+		list.add("福井県");
+		list.add("山梨県");
+		list.add("長野県");
+		list.add("岐阜県");
+		list.add("静岡県");
+		list.add("愛知県");
+		list.add("三重県");
+		list.add("滋賀県");
+		list.add("京都府");
+		list.add("大阪府");
+		list.add("兵庫県");
+		list.add("奈良県");
+		list.add("和歌山県");
+		list.add("鳥取県");
+		list.add("島根県");
+		list.add("岡山県");
+		list.add("広島県");
+		list.add("山口県");
+		list.add("徳島県");
+		list.add("香川県");
+		list.add("愛媛県");
+		list.add("高知県");
+		list.add("福岡県");
+		list.add("佐賀県");
+		list.add("長崎県");
+		list.add("熊本県");
+		list.add("大分県");
+		list.add("宮崎県");
+		list.add("鹿児島県");
+		list.add("沖縄県");
+		return list;
+	}
+
 
 	/**
 	 * =====================================================================================================================

@@ -1,6 +1,8 @@
 package excute;
 
 import excute.ad_areas.Moppy_Election;
+import excute.bean.AccountBean;
+import excute.excel.Account;
 
 /**
  * =====================================================================================================================
@@ -13,10 +15,13 @@ import excute.ad_areas.Moppy_Election;
 public class Pc_Moppy_Election_Main {
 
 	public static void main(String[] args) {
-		// モッピー：漫画アンケート
+		// モッピー：クマクマ総選挙
 		Moppy_Election election = new Moppy_Election();
-		int point = election.execute();
-		System.out.println("クマクマ総選挙。獲得済みポイント"+point);
+		Account account = new Account();
+		for(AccountBean bean : account.execute()){
+			election.execute(bean, Boolean.TRUE);
+		}
+		System.out.println("【モッピー】：クマクマ総選挙終了。獲得済みポイント");
 	}
 
 }

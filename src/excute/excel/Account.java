@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import excute.bean.AccountBean;
 
 
-public class Register {
+public class Account {
 
 	/** ファイル入出力ストリーム */
 	FileInputStream filein;
@@ -27,7 +27,7 @@ public class Register {
 	/**
 	 * コンストラクタ
 	 */
-	public Register() {
+	public Account() {
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Register {
 	public List<AccountBean> execute() {
 		List<AccountBean> list = new ArrayList<AccountBean>();
 		try {
-			filein = new FileInputStream("excel/登録用アカウント.xlsx");
+			filein = new FileInputStream("excel/アカウント.xlsx");
 			workbook = new XSSFWorkbook(filein);
 			// 「データ」シート
 			sheet = workbook.getSheet("データ");

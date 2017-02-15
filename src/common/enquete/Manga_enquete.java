@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import excute.bean.AccountBean;
+
 /**
  * =====================================================================================================================
  * 共通：漫画アンケート
@@ -28,7 +30,7 @@ public class Manga_enquete {
 	 * @author kimC
 	 *
 	 */
-	public static Boolean execute(WebDriver driver) throws Exception {
+	public static Boolean execute(WebDriver driver, AccountBean bean) throws Exception {
 		String originalHandle = driver.getWindowHandle();
 
 		// 0.5秒待ち
@@ -66,17 +68,17 @@ public class Manga_enquete {
 			String text03 = get_content(driver);
 			if (str_matche(text03, "年齢をお知らせ")) {
 				// 年齢
-				driver.findElements(By.name("q1")).get(2).click();
+				driver.findElements(By.name("q1")).get(getAgeGroup(bean.getYear())).click();
 			} else if (str_matche(text03, "性別をお知らせ")) {
 				// 性別
-				driver.findElements(By.name("q1")).get(0).click();
+				driver.findElements(By.name("q1")).get(getIndex(bean.getSex())).click();
 			} else if (str_matche(text03, "職業をお知らせ")) {
 				// 職業
-				driver.findElements(By.name("q1")).get(2).click();
+				driver.findElements(By.name("q1")).get(int_random(7)).click();
 			} else if (str_matche(text03, "お住まいをお知らせ")) {
 				// お住まい
 				Select element = new Select(driver.findElement(By.name("q1")));
-				element.selectByIndex(26);
+				element.selectByIndex(getPrefList().indexOf(bean.getPref()));
 			} else {
 				int q_count = driver.findElements(By.name("q1")).size();
 				if (q_count < 2) {

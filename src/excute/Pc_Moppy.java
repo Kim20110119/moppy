@@ -1,6 +1,5 @@
 package excute;
 
-import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,12 +12,6 @@ public class Pc_Moppy extends Point  {
 	public Pc_Moppy() {
 		// モッピー：ログイン画面
 		driver.get(PC_LOGIN_URL);
-		// モッピー：ログインメールアドレス
-		sendkeysByStr(getByName(V_MAIL), PC_LOGIN_MAIL);
-		// モッピー：ログインパスワード
-		sendkeysByStr(getByName(V_PASS), PC_LOGIN_PASSWORD);
-		// モッピー：ログインボタン
-		click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +30,7 @@ public class Sp_Point {
 				"--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
 		driver = new ChromeDriver(options);
 		// 画面サイズを指定する
-		driver.manage().window().setSize(new Dimension(320, 700));
+		driver.manage().window().setSize(new Dimension(680, 1000));
 	}
 
 	/**
@@ -223,5 +224,37 @@ public class Sp_Point {
 	 */
 	public By getByName(String name) {
 		return By.name(name);
+	}
+
+	/**
+	 * =================================================================================================================
+	 * タブを閉じる
+	 * =================================================================================================================
+	 *
+	 * @param WebDriver
+	 *            driver
+	 * @param String
+	 *            originalHandle
+	 * @param By
+	 *            by
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static String getUrlByTab(WebDriver driver, String originalHandle) {
+		String tab_url = StringUtils.EMPTY;
+		try {
+			for (String handle : driver.getWindowHandles()) {
+				if (!handle.equals(originalHandle)) {
+					driver.switchTo().window(handle);
+					tab_url = driver.getCurrentUrl();
+					return tab_url;
+				}
+			}
+			return tab_url;
+		} catch (Exception e) {
+			return tab_url;
+		}
+
 	}
 }

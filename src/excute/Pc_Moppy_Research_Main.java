@@ -1,5 +1,7 @@
 package excute;
 
+import excute.bean.AccountBean;
+import excute.excel.Account;
 import excute.research.Moppy_Research;
 /**
  * =====================================================================================================================
@@ -9,13 +11,16 @@ import excute.research.Moppy_Research;
  * @author kimC
  *
  */
-public class Pc_Moppy_ResearchMain {
+public class Pc_Moppy_Research_Main {
 
 	public static void main(String[] args) {
 		// モッピー：リサーチアンケート
 		Moppy_Research research = new Moppy_Research();
-		int point = research.execute();
-		System.out.println("【モッピー】：リサーチアンケート終了。獲得済みポイント"+point);
+		Account account = new Account();
+		for(AccountBean bean : account.execute()){
+			research.execute(bean, Boolean.TRUE);
+		}
+		System.out.println("【モッピー】：リサーチアンケート終了。");
 	}
 
 }
