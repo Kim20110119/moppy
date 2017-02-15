@@ -15,7 +15,8 @@ import excute.sp.Sp_Moppy_Reados;
 public class Sp_Moppy_Reados_Main {
 
 	public static void main(String[] args) {
-		Sp_Moppy_Reados reados = new Sp_Moppy_Reados();Account account = new Account();
+		Sp_Moppy_Reados reados = new Sp_Moppy_Reados();
+		Account account = new Account();
 		for(AccountBean bean : account.execute()){
 			reados.execute(bean, Boolean.TRUE);
 		}
