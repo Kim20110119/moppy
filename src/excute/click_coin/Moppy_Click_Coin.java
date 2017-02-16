@@ -4,10 +4,11 @@ import static common.Common.*;
 import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
-import excute.Pc_Moppy;
+import common.Point;
+import excute.bean.AccountBean;
 
 
 /**
@@ -18,7 +19,7 @@ import excute.Pc_Moppy;
  * @author kimC
  *
  */
-public class Moppy_Click_Coin  extends Pc_Moppy {
+public class Moppy_Click_Coin  extends Point {
 	/** 「cc__bnr」 */
 	private static final String C_C_B = "cc__bnr";
 	/** 「cc-btn」 */
@@ -38,13 +39,15 @@ public class Moppy_Click_Coin  extends Pc_Moppy {
 	int end = 11;
 	/** 「毎日クリックコインURL」 */
 	String sindan_url;
+	/** 「オリジンURL」 */
+	String originalHandle;
+	/** 「アカウント情報」 */
+	AccountBean bean = new AccountBean();
 
 	/**
 	 * コンストラクタ
 	 */
 	public Moppy_Click_Coin() {
-		// 「毎日クリックコイン」
-		driver.get(PC_CLICK_COIN_URL);
 	}
 
 	/**
@@ -57,40 +60,48 @@ public class Moppy_Click_Coin  extends Pc_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public Integer execute() {
+	public Integer execute(AccountBean pBean, Boolean loginFlag) {
+		try{
+			this.bean = pBean;
+			if(loginFlag){
+				// モッピー：ログイン画面
+				driver.get(PC_LOGIN_URL);
+				// モッピー：ログインメールアドレス
+				sendkeysByStr(getByName(V_MAIL), bean.getMail());
+				// モッピー：ログインパスワード
+				sendkeysByStr(getByName(V_PASS), bean.getPassword());
+				// モッピー：ログインボタン
+				click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
+			}
+			// 「毎日クリックコイン」
+			driver.get(PC_CLICK_COIN_URL);
+			// モッピー画面のタブ名を取得する
+			originalHandle = driver.getWindowHandle();
+			one_click();
+			driver.quit();
+			return point_count/10;
+		}catch (Exception e){
+			driver.quit();
+			System.out.println("【エラー】：毎日クリック失敗");
+			return point_count;
+		}
 
-		// モッピー画面のタブ名を取得する
-		String original = driver.getWindowHandle();
-//		for(int i = 0; i < 100; i++){
-//			// モッピー画面のタブ名を取得する
-//			String originalHandel = driver.getWindowHandle();
-//			click(originalHandel);
-//			// タブをクリックする
-//			tab_close(driver,originalHandel);
-//			point_count++;
-//		}
-		one_click(original);
-		driver.quit();
-		return point_count/10;
 	}
 
 	/**
 	 * =================================================================================================================
-	 * モッピー：毎日クリック50コイン処理
+	 * モッピー：毎日クリック50コイン処理(キャンペン終了)
 	 * =================================================================================================================
-	 *
-	 *
-	 * @param String originalHandel モッピー画面タグ名
 	 *
 	 * @author kimC
 	 *
 	 */
-	public void click(String originalHandel) {
+	public void click() {
 		try{
 			// バナーをクリックする
 			click(getByClass(C_C_B));
 			// タブを移動する
-			super.getUrlByTab(driver, originalHandel);
+			getUrlByTab();
 			// 都道府県件数を取得する
 			int pref_count = driver.findElement(By.id(I_L_T_A)).findElements(By.tagName(T_LI)).get(int_random(6)).findElements(By.tagName(T_A)).size();
 			// 都道府県条件として、クリックする
@@ -115,7 +126,7 @@ public class Moppy_Click_Coin  extends Pc_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public void one_click(String originalHandel) {
+	public void one_click() {
 		try{
 			int one_click_count = getSize(getByClass(C_C_B_N));
 			for(int i = 0; i < one_click_count; i ++){
@@ -124,6 +135,38 @@ public class Moppy_Click_Coin  extends Pc_Moppy {
 		}catch (Exception e){
 
 		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * タブURLを取得する
+	 * =================================================================================================================
+	 *
+	 * @param WebDriver
+	 *            driver
+	 * @param String
+	 *            originalHandle
+	 * @param By
+	 *            by
+	 *
+	 * @author kimC
+	 *
+	 */
+	public String getUrlByTab() {
+		String tab_url = StringUtils.EMPTY;
+		try {
+			for (String handle : driver.getWindowHandles()) {
+				if (!handle.equals(originalHandle)) {
+					driver.switchTo().window(handle);
+					tab_url = driver.getCurrentUrl();
+					return tab_url;
+				}
+			}
+			return tab_url;
+		} catch (Exception e) {
+			return tab_url;
+		}
+
 	}
 
 	/**
@@ -141,7 +184,7 @@ public class Moppy_Click_Coin  extends Pc_Moppy {
 	 * @author kimC
 	 *
 	 */
-	public static void tab_close(WebDriver driver, String originalHandle) {
+	public void tab_close() {
 		try {
 			for (String handle : driver.getWindowHandles()) {
 				if (!handle.equals(originalHandle)) {

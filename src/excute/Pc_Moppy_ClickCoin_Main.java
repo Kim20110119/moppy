@@ -1,6 +1,8 @@
 package excute;
 
+import excute.bean.AccountBean;
 import excute.click_coin.Moppy_Click_Coin;
+import excute.excel.Account;
 /**
  * =====================================================================================================================
  * 【モッピー】：毎日バナークリック
@@ -13,7 +15,10 @@ public class Pc_Moppy_ClickCoin_Main {
 	public static void main(String[] args) {
 		// モッピー：毎日バナークリック
 		Moppy_Click_Coin mcc = new Moppy_Click_Coin();
-		int point = mcc.execute();
-		System.out.println("毎日バナークリック終了。獲得済みポイント"+point);
+		Account account = new Account();
+		for(AccountBean bean : account.execute()){
+			mcc.execute(bean, Boolean.TRUE);
+		}
+		System.out.println("【モッピー】：毎日クリック終了。");
 	}
 }

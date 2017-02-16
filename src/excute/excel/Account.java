@@ -55,6 +55,9 @@ public class Account {
 					AccountBean bean = new AccountBean();
 					// メールアドレス
 					Cell cell_0 = row.getCell(0);
+					if(StringUtils.isEmpty(this.getCellValue(cell_0))){
+						continue;
+					}
 					bean.setMail(this.getCellValue(cell_0));
 					// ニックネーム
 					Cell cell_1 = row.getCell(1);

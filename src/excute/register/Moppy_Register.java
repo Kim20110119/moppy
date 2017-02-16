@@ -68,7 +68,7 @@ public class Moppy_Register{
 			// 0.5秒待ち
 			sleep(500);
 			// 仮登録
-			if(!this.register(getMailList().get(i))){
+			if(!this.register()){
 				break;
 			}
 			// メール確認
@@ -81,6 +81,8 @@ public class Moppy_Register{
 			}
 			// メールからアクセス
 			this.mail_access();
+			// モッピーリサーチ
+			this.research();
 			// Wifiを再起動
 			this.wifiRestart();
 			// ブラウザを終了する
@@ -94,18 +96,17 @@ public class Moppy_Register{
 	 * モッピー：仮登録
 	 * =================================================================================================================
 	 *
-	 * @param String mail メールアドレス
 	 * @return Boolean 処理結果
 	 *
 	 * @author kimC
 	 *
 	 */
-	public Boolean register(String mail) {
+	public Boolean register() {
 		try {
 			// 「無料会員登録URL」
 			driver.get(PC_SELECT_URL);
 			// メールアドレス
-			driver.findElement(By.id("mail")).sendKeys(mail);
+			driver.findElement(By.id("mail")).sendKeys(bean.getMail());
 			// 「無料会員登録」ボタン
 			driver.findElement(By.id("submit")).click();
 			return Boolean.TRUE;
@@ -272,7 +273,7 @@ public class Moppy_Register{
 
 	/**
 	 * =================================================================================================================
-	 * モッピー：メールリンクからアクセス
+	 * モッピー：モッピーリサーチ
 	 * =================================================================================================================
 	 *
 	 * @return Boolean 処理結果
@@ -283,7 +284,7 @@ public class Moppy_Register{
 	public Boolean research() {
 		try {
 			Moppy_Research research = new Moppy_Research();
-			research.execute(bean, Boolean.FALSE);
+			research.execute(bean, Boolean.TRUE);
 			return Boolean.TRUE;
 		} catch (Exception e) {
 			System.out.println("【エラー】：モッピーアクセスメール獲得失敗");
