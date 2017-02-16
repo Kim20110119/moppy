@@ -69,15 +69,15 @@ public class Moppy_Register{
 			sleep(500);
 			// 仮登録
 			if(!this.register()){
-				break;
+				continue;
 			}
 			// メール確認
 			if(!this.mail_confirm()){
-				break;
+				continue;
 			}
 			// アカウント情報登録
 			if(!this.input()){
-				break;
+				continue;
 			}
 			// メールからアクセス
 			this.mail_access();
