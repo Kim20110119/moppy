@@ -41,7 +41,7 @@ public class Moppy_Research extends Point {
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 20;
+	int end = 50;
 
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();

@@ -79,8 +79,11 @@ public class Moppy_Reados extends Point {
 				driver.get(reados_url);
 				// アンケート件数
 				int enquete_count = driver.findElement(By.className(C_E_B)).findElements(By.tagName(T_A)).size();
+				if(enquete_count < end){
+					end = enquete_count;
+				}
 				// 「獲得ポイント」
-				for (int i = 0; i < enquete_count; i++) {
+				for (int i = start; i < end; i++) {
 					// 調査スタート
 					start();
 					// 「クマクマ調査団画面」

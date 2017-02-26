@@ -54,6 +54,9 @@ public class MoppyConstants {
 	public static final String MAIL_ID = "moppy20110119";
 	/** 【PC】:使い捨てメールパスワード */
 	public static final String MAIL_PASS = "moppy20110119";
+	
+	/** 【PC】:富士TVURL */
+	public static final String FUJITV_REGISTER_URL = "http://pc.moppy.jp/ad/detail.php?m_id=322664";
 
 	/**
 	 * =====================================================================================================================

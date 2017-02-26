@@ -32,6 +32,8 @@ public class AccountBean {
 	private String codeid;
 	/** 秘密の回答 */
 	private String codeword;
+	/** 獲得ポイント */
+	private String point;
 
 	/**
 	 * @return メールアドレス
@@ -152,6 +154,18 @@ public class AccountBean {
 	 */
 	public void setCodeword(String codeword) {
 		this.codeword = codeword;
+	}
+	/**
+	 * @return 獲得ポイント
+	 */
+	public String getPoint() {
+		return point;
+	}
+	/**
+	 * @param 獲得ポイントをセットする
+	 */
+	public void setPoint(String point) {
+		this.point = point;
 	}
 
 }
