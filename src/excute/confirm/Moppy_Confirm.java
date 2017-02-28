@@ -77,7 +77,7 @@ public class Moppy_Confirm extends Point {
 			bean.setPoint(point.replaceAll("\n", ""));
 			outputList.add(bean);
 			// Wifiを再起動
-//			this.wifiRestart();
+			this.wifiRestart();
 			// ブラウザを終了する
 			driver.quit();
 		}
