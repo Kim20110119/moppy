@@ -1,11 +1,6 @@
 package excute.confirm;
 
-import static common.Common.*;
-import static common.constant.HtmlConstants.A_TYPE;
-import static common.constant.HtmlConstants.T_BUTTON;
-import static common.constant.HtmlConstants.V_MAIL;
-import static common.constant.HtmlConstants.V_PASS;
-import static common.constant.HtmlConstants.V_SUBMIT;
+import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
 
 import java.util.ArrayList;
@@ -13,15 +8,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 
 import common.Point;
 import excute.bean.AccountBean;
 import excute.excel.Output;
-import excute.research.Moppy_Research;
 
 /**
  * =====================================================================================================================
@@ -32,8 +22,6 @@ import excute.research.Moppy_Research;
  *
  */
 public class Moppy_Confirm extends Point {
-	/** 「WEBドライバー」 */
-	WebDriver driver;
 	/** 「アカウントBean」 */
 	AccountBean bean = new AccountBean();
 	/** 「診断URL」 */
@@ -59,7 +47,7 @@ public class Moppy_Confirm extends Point {
 
 	/**
 	 * =================================================================================================================
-	 * モッピー：WEB診断
+	 * モッピー：獲得ポイント確認
 	 * =================================================================================================================
 	 *
 	 * @return int point_couont 獲得済みポイント
@@ -71,8 +59,6 @@ public class Moppy_Confirm extends Point {
 		for (int i = 0; i < list.size(); i++) {
 			// アカウントBean
 			bean = list.get(i);
-			// Chromeドライバー
-			driver = new ChromeDriver();
 			// 「登録URL」
 			driver.get(PC_LOGIN_URL);
 			// 0.5秒待ち
@@ -86,13 +72,17 @@ public class Moppy_Confirm extends Point {
 			// モッピー：ログインボタン
 			click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
 			this.sleep(5000);
+			// 獲得済みポイントを取得し設定する
+			String point = driver.findElement(By.className("odometer-inside")).getText();
+			bean.setPoint(point.replaceAll("\n", ""));
 			outputList.add(bean);
 			// Wifiを再起動
-			this.wifiRestart();
+//			this.wifiRestart();
 			// ブラウザを終了する
 			driver.quit();
 		}
-		
+		// アカウント情報をEXCELで出力する
+		this.output_account();
 		return point_count;
 	}
 
@@ -113,7 +103,7 @@ public class Moppy_Confirm extends Point {
 			System.out.println("【エラー】：獲得ポイント出力失敗！");
 		}
 	}
-	
+
 	/**
 	 * =================================================================================================================
 	 * Wifi再起動

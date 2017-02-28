@@ -84,7 +84,9 @@ public class Output {
 		Cell a1 = row.createCell(0);  // 「A1」
 		a1.setCellValue("メールアドレス");
 		Cell b1 = row.createCell(1);  // 「B1」
-		b1.setCellValue("ポイント");
+		b1.setCellValue("パスワード");
+		Cell c1 = row.createCell(2);  // 「C1」
+		c1.setCellValue("ポイント");
 		// セルのスタイル
 		CellStyle style =  workbook.createCellStyle();
 		// フォント
@@ -94,6 +96,7 @@ public class Output {
 		style.setFont(font);
 		a1.setCellStyle(style);
 		b1.setCellStyle(style);
+		c1.setCellStyle(style);
 		int index = 1;
 		if(list != null){
 			for(AccountBean bean : list){
@@ -104,7 +107,10 @@ public class Output {
 				a_index.setCellValue(bean.getMail());     // メールアドレス
 				// 「B_Index」
 				Cell b_index = row_index.createCell(1);
-				b_index.setCellValue(bean.getPoint());    // ポイント
+				b_index.setCellValue(bean.getPassword()); // パスワード
+				// 「C_Index」
+				Cell c_index = row_index.createCell(2);
+				c_index.setCellValue(bean.getPoint());    // ポイント
 				index++;
 			}
 		}
