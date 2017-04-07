@@ -1,9 +1,11 @@
 package common;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * ポイントサイト共通処理
@@ -12,8 +14,12 @@ import org.openqa.selenium.support.ui.Select;
  *
  */
 public class Point {
-	// WEBドライバー
+	/** WEBドライバー */
 	public WebDriver driver;
+	/** WEBドライバーWait */
+	public WebDriverWait wait;
+	/** JavaScript */
+	public JavascriptExecutor executor;
 
 	/**
 	 * システムプロパティにChromeドライバーの設定処理
@@ -23,6 +29,8 @@ public class Point {
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 		// Chromeドライバー
 		driver = new ChromeDriver();
+		wait = new WebDriverWait(driver, 10);
+		executor = (JavascriptExecutor)driver;
 	}
 
 	/**
@@ -216,5 +224,24 @@ public class Point {
 	 */
 	public By getByName(String name) {
 		return By.name(name);
+	}
+
+	/**
+	 * =================================================================================================================
+	 * スクロール処理
+	 * =================================================================================================================
+	 *
+	 * @param 座標 x
+	 * @param 座標 y
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void scroll(int x, int y) {
+		try {
+			executor.executeScript("scroll(" + x + ", " + y + ");");
+		} catch (Exception e) {
+			System.out.println("【エラー】：スクロール処理が失敗しました。");
+		}
 	}
 }

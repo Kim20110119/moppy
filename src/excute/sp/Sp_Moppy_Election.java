@@ -6,6 +6,7 @@ import static common.constant.MoppyConstants.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import common.Sp_Point;
 import excute.bean.AccountBean;
@@ -32,7 +33,7 @@ public class Sp_Moppy_Election extends Sp_Point {
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 200;
+	int end = 400;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
 
@@ -125,26 +126,98 @@ public class Sp_Moppy_Election extends Sp_Point {
 	 */
 	public void start() {
 		try {
+			// 「再スタートフラグ」
+			restart_flag = Boolean.FALSE;
+			// 「投票選択肢」クリック
+			this.select();
+			// 「次へ」ボタン
+			this.next();
+			// 「次の投票へ」
+			this.next_start();
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「投票選択肢」クリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void select() {
+		try {
+			// 1秒待ち
+			sleep(1000);
+			// 0.5秒待ち
+			wait.until(ExpectedConditions.visibilityOfElementLocated(getByXpath("label", "class", "radio")));
 			// 「投票選択肢カウント」
 			int choice_count = getSize(getByXpath("label", "class", "radio"));
 			// 「投票選択肢」クリック
 			clickByIndex(getByXpath("label", "class", "radio"), int_random(choice_count));
+		} catch (Exception e) {
+			try {
+				// 「投票選択肢」クリック
+				clickByIndex(getByXpath("label", "class", "radio"), int_random(getSize(getByXpath("label", "class", "radio"))));
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「次へ」ボタンクリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void next() {
+		try {
 			// 1秒待ち
 			sleep(1000);
 			// 「次へ」ボタン
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("button--answer"))));
 			driver.findElement(By.className("button--answer")).click();
+		} catch (Exception e) {
+			super.scroll(0, 100);
+			try {
+				driver.findElement(By.className("button--answer")).click();
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「次の投票へ」ボタンクリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void next_start() {
+		try {
 			// 1秒待ち
 			sleep(1000);
-			// 「次の投票へ」
+			// 「次の投票へ」ボタン
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0)));
 			driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
-			// 1秒待ち
-			sleep(2000);
 		} catch (Exception e) {
-			System.out.println("【エラー】：選挙スタート失敗");
-			System.out.println("【エラー】：クマクマ総選挙遷移再スタート");
-			point_count -= 1;
-			// 「再スタートフラグ」
-			restart_flag = Boolean.TRUE;
+			super.scroll(0, 100);
+			try {
+				// 1秒待ち
+				sleep(1000);
+				driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
 		}
 	}
 

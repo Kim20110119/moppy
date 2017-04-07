@@ -6,6 +6,7 @@ import static common.constant.MoppyConstants.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import excute.Pc_Moppy;
 import excute.bean.AccountBean;
@@ -70,7 +71,7 @@ public class Moppy_Election extends Pc_Moppy {
 			// 「CMくじ」
 			driver.get(PC_CM_URL);
 			// 「クマクマ総選挙URL」取得する
-			election_url = driver.findElement(By.className(C_D_P)).findElements(By.tagName(T_A)).get(5)
+			election_url = driver.findElement(By.className(C_D_P)).findElements(By.tagName(T_A)).get(2)
 					.getAttribute(A_HREF);
 			if (StringUtils.isNoneEmpty(election_url)) {
 				// 「クマクマ総選挙画面」
@@ -128,26 +129,98 @@ public class Moppy_Election extends Pc_Moppy {
 	 */
 	public void start() {
 		try {
+			// 「再スタートフラグ」
+			restart_flag = Boolean.FALSE;
+			// 「投票選択肢」クリック
+			this.select();
+			// 「次へ」ボタン
+			this.next();
+			// 「次の投票へ」
+			this.next_start();
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「投票選択肢」クリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void select() {
+		try {
+			// 1秒待ち
+			sleep(1000);
+			// 0.5秒待ち
+			wait.until(ExpectedConditions.visibilityOfElementLocated(getByXpath("label", "class", "radio")));
 			// 「投票選択肢カウント」
 			int choice_count = getSize(getByXpath("label", "class", "radio"));
 			// 「投票選択肢」クリック
 			clickByIndex(getByXpath("label", "class", "radio"), int_random(choice_count));
+		} catch (Exception e) {
+			try {
+				// 「投票選択肢」クリック
+				clickByIndex(getByXpath("label", "class", "radio"), int_random(getSize(getByXpath("label", "class", "radio"))));
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「次へ」ボタンクリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void next() {
+		try {
 			// 1秒待ち
 			sleep(1000);
 			// 「次へ」ボタン
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("button--answer"))));
 			driver.findElement(By.className("button--answer")).click();
-			// 1秒待ち
-			sleep(1000);
-			// 「次の投票へ」
-			driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
-			// 1秒待ち
-			sleep(1000);
 		} catch (Exception e) {
-			System.out.println("【エラー】：選挙スタート失敗");
-			System.out.println("【エラー】：クマクマ総選挙遷移再スタート");
-			point_count -= 1;
-			// 「再スタートフラグ」
-			restart_flag = Boolean.TRUE;
+			super.scroll(0, 100);
+			try {
+				driver.findElement(By.className("button--answer")).click();
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
+		}
+	}
+
+	/**
+	 * =================================================================================================================
+	 * 「次の投票へ」ボタンクリック処理
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void next_start() {
+		try {
+			// 1秒待ち
+			sleep(1000);
+			// 「次の投票へ」ボタン
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0)));
+			driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
+		} catch (Exception e) {
+			super.scroll(0, 100);
+			try {
+				// 1秒待ち
+				sleep(1000);
+				driver.findElement(By.className("button__box")).findElements(By.tagName(T_A)).get(0).click();
+			} catch (Exception r_e){
+				// 「再スタートフラグ」
+				restart_flag = Boolean.TRUE;
+			}
 		}
 	}
 

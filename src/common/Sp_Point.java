@@ -3,10 +3,12 @@ package common;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * ポイントサイト共通処理
@@ -15,8 +17,12 @@ import org.openqa.selenium.support.ui.Select;
  *
  */
 public class Sp_Point {
-	// WEBドライバー
+	/** WEBドライバー */
 	public WebDriver driver;
+	/** WEBドライバーWait */
+	public WebDriverWait wait;
+	/** JavaScript */
+	public JavascriptExecutor executor;
 
 	/**
 	 * システムプロパティにChromeドライバーの設定処理
@@ -29,6 +35,8 @@ public class Sp_Point {
 		options.addArguments(
 				"--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
 		driver = new ChromeDriver(options);
+		wait = new WebDriverWait(driver, 10);
+		executor = (JavascriptExecutor)driver;
 		// 画面サイズを指定する
 		driver.manage().window().setSize(new Dimension(680, 1000));
 	}
@@ -256,5 +264,24 @@ public class Sp_Point {
 			return tab_url;
 		}
 
+	}
+
+	/**
+	 * =================================================================================================================
+	 * スクロール処理
+	 * =================================================================================================================
+	 *
+	 * @param 座標 x
+	 * @param 座標 y
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void scroll(int x, int y) {
+		try {
+			executor.executeScript("scroll(" + x + ", " + y + ");");
+		} catch (Exception e) {
+			System.out.println("【エラー】：スクロール処理が失敗しました。");
+		}
 	}
 }
