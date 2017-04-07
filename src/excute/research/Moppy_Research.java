@@ -42,9 +42,10 @@ public class Moppy_Research extends Point {
 	int start = 0;
 	/** 「終了Index」 */
 	int end = 50;
-
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
+	/** 「アンケートIndex」 */
+	int index = 0;
 
 	/**
 	 * コンストラクタ
@@ -107,52 +108,57 @@ public class Moppy_Research extends Point {
 	 * @author kimC
 	 *
 	 */
-	public void start() {
+	public Boolean start() {
 		try {
-			String enquet_url = driver.findElements(By.className(C_P_B_B)).get(0).getAttribute(A_HREF);
+			String enquet_url = driver.findElements(By.className(C_P_B_B)).get(index).getAttribute(A_HREF);
 			driver.get(enquet_url);
+			String current_url = driver.getCurrentUrl();
+			if(!current_url.matches(".*http://ad-contents.jp.*")){
+				index++;
+				return Boolean.FALSE;
+			}
 			// 「アンケートに進む」
 			click(getByClass(C_U_B));
 			// 「回答開始」
 			click(getByClass(C_U_B));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「性別」
 			clickByIndex(getByClass(C_U_L_R), getIndex(bean.getSex()));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「次へ」
 			click(getByClass(C_U_B));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「年齢」
 			clickByIndex(getByClass(C_U_L_R), this.getAgeGroup());
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「次へ」
 			click(getByClass(C_U_B));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「未既婚」
 			clickByIndex(getByClass(C_U_L_R), getIndex(bean.getMarried()));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「次へ」
 			click(getByClass(C_U_B));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「住所」
 			selectByIndex(getByClass(C_U_S), this.getPref());
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「次へ」
 			click(getByClass(C_U_B));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「職業」
 			clickByIndex(getByClass(C_U_L_R), int_random(7));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
 			// 「次へ」
 			click(getByClass(C_U_B));
 			// 「アンケート回答」
@@ -174,24 +180,31 @@ public class Moppy_Research extends Point {
 					break;
 				}
 				// 1秒待ち
-				sleep(1500);
+				sleep(1000);
 				// 「次へ」
 				click(getByClass(C_U_B));
 			}
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
+			// 広告を閉じる
+			ad_close(driver);
 			// 広告を閉じる
 			ad_close(driver);
 			// 「ポイント獲得」
-			click(getByXpath(T_INPUT, A_VALUE, "ポイント獲得"));
+			click(getByXpath(T_INPUT, A_VALUE, "P獲得"));
 			// 1秒待ち
-			sleep(1500);
+			sleep(1000);
+			ad_close(driver);
 			ad_close(driver);
 			// 「閉じる」
 			driver.findElement(By.partialLinkText("閉じる"));
+			driver.get("http://pc.moppy.jp/point_research/finish.php");
 			point_count += 1;
+			// 結果
+			return Boolean.TRUE;
 		} catch (Exception e) {
 			System.out.println("【エラー】：ポイントリサーチ失敗");
+			return Boolean.FALSE;
 		}
 	}
 
