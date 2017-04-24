@@ -8,8 +8,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
-import common.Point;
 import excute.bean.AccountBean;
 import excute.excel.Output;
 
@@ -21,7 +23,9 @@ import excute.excel.Output;
  * @author kimC
  *
  */
-public class Moppy_Confirm extends Point {
+public class Moppy_Confirm {
+	// WEBドライバー
+		public WebDriver driver;
 	/** 「アカウントBean」 */
 	AccountBean bean = new AccountBean();
 	/** 「診断URL」 */
@@ -59,6 +63,8 @@ public class Moppy_Confirm extends Point {
 		for (int i = 0; i < list.size(); i++) {
 			// アカウントBean
 			bean = list.get(i);
+			// Chromeドライバー
+			driver = new ChromeDriver();
 			// 「登録URL」
 			driver.get(PC_LOGIN_URL);
 			// 0.5秒待ち
@@ -132,6 +138,185 @@ public class Moppy_Confirm extends Point {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	/**
+	 * クリック処理
+	 *
+	 * @param By
+	 *            locator
+	 */
+	public void click(By locator) {
+		driver.findElement(locator).click();
+	}
+
+	/**
+	 * クリック処理
+	 *
+	 * @param By
+	 *            locator
+	 * @param int
+	 *            index
+	 *
+	 */
+	public void clickByIndex(By locator, int index) {
+		driver.findElements(locator).get(index).click();
+	}
+
+	/**
+	 * フォームのサブミット処理
+	 *
+	 * @param By
+	 *            locator
+	 */
+	public void submit(By locator) {
+		driver.findElement(locator).submit();
+	}
+
+	/**
+	 * テキストフィールドの入力処理
+	 *
+	 * @param By
+	 *            locator
+	 * @param String
+	 *            text
+	 */
+	public void sendkeysByStr(By locator, String text) {
+		driver.findElement(locator).sendKeys(text);
+	}
+
+	/**
+	 * プルダウンの選択処理
+	 *
+	 * @param By
+	 *            locator
+	 * @param String
+	 *            label
+	 */
+	public void selectByText(By locator, String label) {
+		Select element = new Select(driver.findElement(locator));
+		element.selectByVisibleText(label);
+	}
+
+	/**
+	 * プルダウンの選択処理
+	 *
+	 * @param By
+	 *            locator
+	 * @param int
+	 *            index
+	 */
+	public void selectByIndex(By locator, int index) {
+		Select element = new Select(driver.findElement(locator));
+		element.selectByIndex(index);
+	}
+
+	/**
+	 * プルダウンの選択処理
+	 *
+	 * @param By
+	 *            locator
+	 * @param String
+	 *            value
+	 */
+	public void selectByValue(By locator, String value) {
+		Select element = new Select(driver.findElement(locator));
+		element.selectByValue(value);
+	}
+
+	/**
+	 * エレメントサイズ取得処理
+	 *
+	 * @param By
+	 *            locator
+	 */
+	public int getSize(By locator) {
+		return driver.findElements(locator).size();
+	}
+
+	/**
+	 * xPath取得処理
+	 *
+	 * @param String
+	 *            tag
+	 * @param String
+	 *            key
+	 * @param String
+	 *            value
+	 * @return String xPath
+	 *
+	 */
+	public String getXpath(String tag, String key, String value) {
+		return "//" + tag + "[@" + key + "='" + value + "']";
+
+	}
+
+	/**
+	 * ByxPath取得処理
+	 *
+	 * @param String
+	 *            tag
+	 * @param String
+	 *            key
+	 * @param String
+	 *            value
+	 * @return By xPath
+	 *
+	 */
+	public By getByXpath(String tag, String key, String value) {
+		return By.xpath(getXpath(tag, key, value));
+	}
+
+	/**
+	 * ByxClassName取得処理
+	 *
+	 * @param String
+	 *            className
+	 *
+	 * @return By className
+	 *
+	 */
+	public By getByClass(String className) {
+		return By.className(className);
+	}
+
+	/**
+	 * ByxTagName取得処理
+	 *
+	 * @param String
+	 *            tag
+	 *
+	 * @return By tagName
+	 *
+	 */
+	public By getByTag(String tag) {
+		return By.tagName(tag);
+	}
+
+	/**
+	 * ByxId取得処理
+	 *
+	 * @param String
+	 *            id
+	 *
+	 * @return By id
+	 *
+	 */
+	public By getById(String id) {
+		return By.id(id);
+	}
+
+	/**
+	 * ByxName取得処理
+	 *
+	 * @param String
+	 *            name
+	 *
+	 * @return By name
+	 *
+	 */
+	public By getByName(String name) {
+		return By.name(name);
 	}
 
 }

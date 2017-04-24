@@ -29,15 +29,17 @@ public class Moppy_Reados extends Point {
 	/** 「クマクマ調査団URL」 */
 	String reados_url;
 	/** 「獲得済みポイント」 */
-	int point_count = 0;
+	int flag = 2;
 	/** 「アンケート件数」 */
 	int enquete_count = 0;
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 10;
+	int end = 30;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
+	/** 「break_flag」 */
+	boolean break_flag = false;
 
 	/**
 	 * コンストラクタ
@@ -88,16 +90,24 @@ public class Moppy_Reados extends Point {
 					start();
 					// 「クマクマ調査団画面」
 					driver.get(reados_url);
+					if(break_flag){
+						break;
+					}
 				}
 			}else{
 				System.out.println("【エラー】：クマクマ調査団URL取得失敗!");
+				driver.quit();
+				flag = 1;
+				return flag;
 			}
+			this.count();
 			driver.quit();
-			return point_count;
+			return flag;
 		} catch (Exception e) {
 			driver.quit();
-			System.out.println("【エラー】：クマクマ調査団s失敗");
-			return point_count;
+			System.out.println("【エラー】：クマクマ調査団失敗");
+			flag = 1;
+			return flag;
 		}
 
 	}
@@ -118,10 +128,19 @@ public class Moppy_Reados extends Point {
 			if(StringUtils.isNotEmpty(enquete_url)){
 				// 「該当するAdsurveyアンケート」へ遷移する
 				driver.get(enquete_url);
-				// 「Adsurveyアンケート回答」
-				if (Adsurvey_Enquete.execute(driver, bean)) {
-					point_count += 10;
+				// 「フレームURL」
+				String frame_url = driver.findElements(By.tagName(T_IFRAME)).get(INT_0).getAttribute(A_SRC);
+				// 「フレーム」
+				driver.get(frame_url);
+				String message = driver.findElement(By.className("attention_txt")).getText();
+				if(message.equals("現在、アクセス過多のため一時的に回答を制限しております。\nご迷惑をおかけして大変申し訳ございませんが、続けて回答したい場合は以下の認証を行ってください。")){
+					break_flag = true;
+				}else{
+					// 「Adsurveyアンケート回答」
+					if (Adsurvey_Enquete.execute(driver, bean)) {
+					}
 				}
+				
 			}else{
 				System.out.println("【エラー】：AdsurveyアンケートURL取得失敗!");
 			}
@@ -129,6 +148,50 @@ public class Moppy_Reados extends Point {
 		} catch (Exception e) {
 			System.out.println("【エラー】：Adsurveyアンケート回答失敗!");
 			Adsurvey_Enquete.execute_restart(driver);
+		}
+	}
+	
+	/**
+	 * =================================================================================================================
+	 * クマクマ調査件数カウントする
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void count() {
+		try {
+			// 「クマクマ調査団画面」
+			driver.get(reados_url);
+			// アンケート件数
+			flag = driver.findElement(By.className(C_E_B)).findElements(By.tagName(T_A)).size();
+			if(flag == 1){
+				flag++;
+			}
+		} catch (Exception e) {
+			System.out.println("【エラー】：`調査団件数取得失敗");
+		}
+	}
+	
+	/**
+	 * =================================================================================================================
+	 * クマクマ調査件数カウントする
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void captcha() {
+		try {
+			// 「クマクマ調査団画面」
+			driver.get(reados_url);
+			// アンケート件数
+			int captcha = driver.findElements(By.xpath("//form[@action='/captcha/auth']")).size();
+			if(captcha > 1){
+				break_flag = true;
+			}
+		} catch (Exception e) {
+			System.out.println("【エラー】：`調査団件数取得失敗");
 		}
 	}
 }

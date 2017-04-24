@@ -29,13 +29,13 @@ public class Sp_Moppy_Reados extends Sp_Point {
 	/** 「クマクマ調査団URL」 */
 	String reados_url;
 	/** 「獲得済みポイント」 */
-	int point_count = 0;
+	int flag = 2;
 	/** 「アンケート件数」 */
 	int enquete_count = 0;
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 10;
+	int end = 30;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
 
@@ -91,13 +91,17 @@ public class Sp_Moppy_Reados extends Sp_Point {
 				}
 			}else{
 				System.out.println("【エラー】：クマクマ調査団URL取得失敗!");
+				driver.quit();
+				flag = 1;
+				return flag;
 			}
+			this.count();
 			driver.quit();
-			return point_count;
+			return flag;
 		} catch (Exception e) {
 			driver.quit();
 			System.out.println("【エラー】：クマクマ調査団失敗");
-			return point_count;
+			return flag;
 		}
 
 	}
@@ -120,7 +124,6 @@ public class Sp_Moppy_Reados extends Sp_Point {
 				driver.get(enquete_url);
 				// 「Adsurveyアンケート回答」
 				if (Sp_Adsurvey_Enquete.execute(driver, bean)) {
-					point_count += 10;
 				}
 			}else{
 				System.out.println("【エラー】：AdsurveyアンケートURL取得失敗!");
@@ -129,6 +132,28 @@ public class Sp_Moppy_Reados extends Sp_Point {
 		} catch (Exception e) {
 			System.out.println("【エラー】：Adsurveyアンケート回答失敗!");
 			Adsurvey_Enquete.execute_restart(driver);
+		}
+	}
+	
+	/**
+	 * =================================================================================================================
+	 * クマクマ調査件数カウントする
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void count() {
+		try {
+			// 「クマクマ調査団画面」
+			driver.get(reados_url);
+			// アンケート件数
+			flag = driver.findElement(By.id(I_S_L)).findElements(By.tagName(T_A)).size();
+			if(flag == 1){
+				flag++;
+			}
+		} catch (Exception e) {
+			System.out.println("【エラー】：`調査団件数取得失敗");
 		}
 	}
 }

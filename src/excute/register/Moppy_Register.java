@@ -3,6 +3,7 @@ package excute.register;
 import static common.Common.*;
 import static common.constant.MoppyConstants.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import excute.bean.AccountBean;
+import excute.excel.Output;
 import excute.research.Moppy_Research;
 
 /**
@@ -38,6 +40,8 @@ public class Moppy_Register{
 	int start = 0;
 	/** 「WEB診断終了番号」 */
 	int end = 50;
+	/** 「出力アカウントリスト」 */
+	List<AccountBean> outputList = new ArrayList<AccountBean>();
 
 	/**
 	 * コンストラクタ
@@ -79,15 +83,17 @@ public class Moppy_Register{
 			if(!this.input()){
 				continue;
 			}
-			// メールからアクセス
-			this.mail_access();
+//			// メールからアクセス
+//			this.mail_access();
 			// モッピーリサーチ
-			this.research();
+			this.outputList.add(bean);
 			// Wifiを再起動
 			this.wifiRestart();
 			// ブラウザを終了する
 			driver.quit();
 		}
+		// アカウント情報をEXCELで出力する
+		this.output_account();
 		return point_count;
 	}
 
@@ -309,6 +315,24 @@ public class Moppy_Register{
 		driver.switchTo().alert().accept();
 	}
 
+	/**
+	 * =================================================================================================================
+	 * 獲得ポイント情報を出力する
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void output_account() {
+		try{
+			Output output = new Output();
+			output.execute(outputList);
+			System.out.println("獲得ポイント出力成功！");
+		}catch (Exception e) {
+			System.out.println("【エラー】：獲得ポイント出力失敗！");
+		}
+	}
+	
 	/**
 	 * sleep処理
 	 *
