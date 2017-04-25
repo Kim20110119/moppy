@@ -42,13 +42,22 @@ public class Moppy_Register{
 	int end = 50;
 	/** 「出力アカウントリスト」 */
 	List<AccountBean> outputList = new ArrayList<AccountBean>();
+	/** 「ID」 */
+	String id  = "";
+	/** 「パスワード」 */
+	String pass  = "";
+	/** 「UID」 */
+	String uid  = "";
 
 	/**
 	 * コンストラクタ
 	 */
-	public Moppy_Register() {
+	public Moppy_Register(String pId, String pPass, String pUid) {
 		// Chromeドライバーをプロパティへ設定
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
+		this.id = pId;     // ID
+		this.pass = pPass; // パスワード
+		this.uid = pUid;   // UID
 	}
 
 	/**
@@ -140,9 +149,9 @@ public class Moppy_Register{
 			// 「他のアカウントにログイン（復元／同期）」をクリック
 			driver.findElement(By.id("link_loginform")).click();
 		    // 「ID」を入力する
-			driver.findElement(By.id("user_number")).sendKeys(MAIL_ID);
+			driver.findElement(By.id("user_number")).sendKeys(this.id);
 		    // 「パスワード」を入力する
-			driver.findElement(By.id("user_password")).sendKeys(MAIL_PASS);
+			driver.findElement(By.id("user_password")).sendKeys(this.pass);
 		    // 1秒待ち
 			sleep(1000);
 		    // 「ログインする」ボタンのクリック
@@ -169,7 +178,7 @@ public class Moppy_Register{
 			// メール番号を取得する
 			String mail_num = mail_id.split("_", 0)[2];
 			// メール詳細URLを取得する
-			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=a73ac4dcc47e2fb4827d093a9416c679&num=" + mail_num + "&detailmode=1";
+			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=" + this.uid + "&num=" + mail_num + "&detailmode=1";
 			// メール内容詳細参照用ドライバー
 			WebDriver mail_detail = new ChromeDriver();
 			// メール内容詳細参照へ遷移する
@@ -260,7 +269,7 @@ public class Moppy_Register{
 			sleep(1000);
 			String mail_id = driver.findElements(By.className("ui-listview")).get(1).findElement(By.tagName("li")).getAttribute("id");
 			String mail_num = mail_id.split("_", 0)[2];
-			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=a73ac4dcc47e2fb4827d093a9416c679&num=" + mail_num + "&detailmode=1";
+			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=" + this.uid + "&num=" + mail_num + "&detailmode=1";
 			// メール内容詳細参照用ドライバー
 			WebDriver mail_detail = new ChromeDriver();
 			// メール内容詳細参照へ遷移する
@@ -332,7 +341,7 @@ public class Moppy_Register{
 			System.out.println("【エラー】：獲得ポイント出力失敗！");
 		}
 	}
-	
+
 	/**
 	 * sleep処理
 	 *

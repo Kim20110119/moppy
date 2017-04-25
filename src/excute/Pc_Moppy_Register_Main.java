@@ -13,7 +13,7 @@ import excute.register.Moppy_Register;
 public class Pc_Moppy_Register_Main {
 	public static void main(String[] args) {
 		// モッピー：毎日バナークリック
-		Moppy_Register register = new Moppy_Register();
+		Moppy_Register register = new Moppy_Register(args[0], args[1], args[2]);
 		Register account = new Register();
 		register.execute(account.execute());
 		System.out.println("モッピー新規登録完了");
