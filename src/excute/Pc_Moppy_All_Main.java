@@ -71,7 +71,7 @@ public class Pc_Moppy_All_Main {
 			System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 			// Chromeドライバー
 			WebDriver driver = new ChromeDriver();
-			driver.get("http://admin:20160801Kim@192.168.179.1/index.cgi/reboot_main");
+			driver.get("http://admin:20110119Jjz@192.168.179.1/index.cgi/reboot_main");
 			driver.findElement(By.id("UPDATE_BUTTON")).click();
 			driver.switchTo().alert().accept();
 			sleep(100000);
