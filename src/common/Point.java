@@ -29,8 +29,27 @@ public class Point {
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 		// Chromeドライバー
 		driver = new ChromeDriver();
+		this.setImage();
 		wait = new WebDriverWait(driver, 10);
 		executor = (JavascriptExecutor)driver;
+	}
+	
+	/**
+	 * =================================================================================================================
+	 * Chromeの設定：すべての画像を表示しない
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void setImage() {
+		try{
+			driver.get("chrome://settings-frame/content");
+			driver.findElements(By.name("images")).get(1).click();
+			driver.findElement(By.id("content-settings-overlay-confirm")).click();
+		}catch (Exception e){
+
+		}
 	}
 
 	/**

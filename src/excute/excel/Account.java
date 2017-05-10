@@ -40,10 +40,10 @@ public class Account {
 	 * @author kimC
 	 *
 	 */
-	public List<AccountBean> execute() {
+	public List<AccountBean> execute(String fileName) {
 		List<AccountBean> list = new ArrayList<AccountBean>();
 		try {
-			filein = new FileInputStream("excel/アカウント.xlsx");
+			filein = new FileInputStream("excel/"+ fileName +".xlsx");
 			workbook = new XSSFWorkbook(filein);
 			// 「データ」シート
 			sheet = workbook.getSheet("データ");

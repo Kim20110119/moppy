@@ -35,12 +35,31 @@ public class Sp_Point {
 		options.addArguments(
 				"--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
 		driver = new ChromeDriver(options);
+		this.setImage();
 		wait = new WebDriverWait(driver, 10);
 		executor = (JavascriptExecutor)driver;
 		// 画面サイズを指定する
 		driver.manage().window().setSize(new Dimension(680, 1000));
 	}
 
+	/**
+	 * =================================================================================================================
+	 * Chromeの設定：すべての画像を表示しない
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void setImage() {
+		try{
+			driver.get("chrome://settings-frame/content");
+			driver.findElements(By.name("images")).get(1).click();
+			driver.findElement(By.id("content-settings-overlay-confirm")).click();
+		}catch (Exception e){
+
+		}
+	}
+	
 	/**
 	 * クリック処理
 	 *

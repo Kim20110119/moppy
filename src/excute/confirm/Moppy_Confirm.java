@@ -63,8 +63,13 @@ public class Moppy_Confirm {
 		for (int i = 0; i < list.size(); i++) {
 			// アカウントBean
 			bean = list.get(i);
-			// Chromeドライバー
-			driver = new ChromeDriver();
+			try{
+				// Chromeドライバー
+				driver = new ChromeDriver();
+			}catch(Exception e_q){
+				// Chromeドライバー
+				driver = new ChromeDriver();
+			}
 			// 「登録URL」
 			driver.get(PC_LOGIN_URL);
 			// 0.5秒待ち
@@ -78,14 +83,22 @@ public class Moppy_Confirm {
 			// モッピー：ログインボタン
 			click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
 			this.sleep(5000);
-			// 獲得済みポイントを取得し設定する
-			String point = driver.findElement(By.className("odometer-inside")).getText();
-			bean.setPoint(point.replaceAll("\n", ""));
-			outputList.add(bean);
-			// Wifiを再起動
-			this.wifiRestart();
-			// ブラウザを終了する
-			driver.quit();
+			try{
+				// 獲得済みポイントを取得し設定する
+				String point = driver.findElement(By.className("odometer-inside")).getText();
+				bean.setPoint(point.replaceAll("\n", ""));
+				outputList.add(bean);
+				// Wifiを再起動
+				this.wifiRestart();
+			}catch (Exception e){
+				System.out.println("【エラー】：" + bean.getMail()+"ログイン失敗！");
+			}
+			try{
+				// ブラウザを終了する
+				driver.quit();
+			}catch(Exception e_q){
+			}
+			
 		}
 		// アカウント情報をEXCELで出力する
 		this.output_account();

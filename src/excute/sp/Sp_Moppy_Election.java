@@ -33,7 +33,7 @@ public class Sp_Moppy_Election extends Sp_Point {
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 400;
+	int end = 100;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
 
@@ -107,10 +107,16 @@ public class Sp_Moppy_Election extends Sp_Point {
 			} else {
 				System.out.println("【エラー】：クマクマ総選挙URL取得失敗");
 			}
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			return point_count;
 		} catch (Exception e) {
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			System.out.println("【エラー】：クマクマ総選挙失敗");
 			return point_count;
 		}

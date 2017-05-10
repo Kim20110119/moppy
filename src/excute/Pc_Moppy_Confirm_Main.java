@@ -17,7 +17,7 @@ public class Pc_Moppy_Confirm_Main {
 		// モッピー：獲得済みポイント抽出
 		Moppy_Confirm confirm = new Moppy_Confirm();
 		Account account = new Account();
-		confirm.execute(account.execute());
+		confirm.execute(account.execute(args[0]));
 		System.out.println("【モッピー】：獲得済みポイント抽出処理完了");
 	}
 

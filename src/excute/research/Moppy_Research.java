@@ -41,7 +41,7 @@ public class Moppy_Research extends Point {
 	/** 「開始Index」 */
 	int start = 0;
 	/** 「終了Index」 */
-	int end = 50;
+	int end = 10;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
 	/** 「アンケートIndex」 */
@@ -91,10 +91,16 @@ public class Moppy_Research extends Point {
 				// 「ポイントリサーチ」
 				driver.get(PC_POINT_RESEARCH_URL);
 			}
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			return point_count;
 		} catch (Exception e) {
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			System.out.println("【エラー】：ポイントリサーチ失敗");
 			return point_count;
 		}

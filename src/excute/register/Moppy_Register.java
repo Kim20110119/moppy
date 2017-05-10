@@ -32,8 +32,6 @@ public class Moppy_Register{
 	AccountBean bean = new AccountBean();
 	/** 「診断URL」 */
 	String shindan_url  = StringUtils.EMPTY;
-	/** 「獲得ポイント」 */
-	int point_count = 0;
 	/** 「再スタートフラグ」 */
 	Boolean restart_flag = Boolean.FALSE;
 	/** 「WEB診断開始番号」 */
@@ -70,7 +68,7 @@ public class Moppy_Register{
 	 * @author kimC
 	 *
 	 */
-	public Integer execute(List<AccountBean> list) {
+	public void execute(List<AccountBean> list) {
 		for (int i = 0; i < list.size(); i++) {
 			// アカウントBean
 			bean = list.get(i);
@@ -92,8 +90,8 @@ public class Moppy_Register{
 			if(!this.input()){
 				continue;
 			}
-//			// メールからアクセス
-//			this.mail_access();
+			// メールからアクセス
+			this.mail_access();
 			// モッピーリサーチ
 			this.outputList.add(bean);
 			// Wifiを再起動
@@ -103,7 +101,6 @@ public class Moppy_Register{
 		}
 		// アカウント情報をEXCELで出力する
 		this.output_account();
-		return point_count;
 	}
 
 	/**
@@ -157,22 +154,22 @@ public class Moppy_Register{
 		    // 「ログインする」ボタンのクリック
 			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript("checkLogin();");
-			// 1秒待ち
-			sleep(1000);
+			// 1.5秒待ち
+			sleep(1500);
 		    // 「確認」をクリックする
 			jse.executeScript("okConfirmDialog();");
-			// 1秒待ち
-			sleep(1000);
+			// 2秒待ち
+			sleep(2000);
 			driver.switchTo().alert().accept();
-			// 1秒待ち
-			sleep(1000);
+			// 2秒待ち
+			sleep(2000);
 			driver.switchTo().alert().accept();
 			// 1秒待ち
 			sleep(1000);
 			// 「受信トレイ」をクリックする
 			jse.executeScript("location.href='recv.php';");
-			// 1秒待ち
-			sleep(1000);
+			// 3秒待ち
+			sleep(3000);
 			// メールIDを取得する
 			String mail_id = driver.findElements(By.className("ui-listview")).get(1).findElement(By.tagName("li")).getAttribute("id");
 			// メール番号を取得する
@@ -255,18 +252,17 @@ public class Moppy_Register{
 	 * @author kimC
 	 *
 	 */
-	public Boolean mail_access() {
+	public void mail_access() {
 		try {
 			// 使い捨てメール画面
 			driver.get(MAIL_URL);
-		    // 「ログインする」ボタンのクリック
-			JavascriptExecutor jse = (JavascriptExecutor) driver;
-			// 1秒待ち
-			sleep(1000);
+		    // 2秒待ち
+			sleep(2000);
 			// 「受信トレイ」をクリックする
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript("location.href='recv.php';");
-			// 1秒待ち
-			sleep(1000);
+			// 1.5秒待ち
+			sleep(1500);
 			String mail_id = driver.findElements(By.className("ui-listview")).get(1).findElement(By.tagName("li")).getAttribute("id");
 			String mail_num = mail_id.split("_", 0)[2];
 			String mail_detail_url = "https://m.kuku.lu/smphone.app.recv.data.php?UID=" + this.uid + "&num=" + mail_num + "&detailmode=1";
@@ -278,10 +274,8 @@ public class Moppy_Register{
 			String moppy_access_url = mail_detail.findElement(By.partialLinkText("http://pc.moppy.jp/cl")) .getText();
 			mail_detail.quit();
 			driver.get(moppy_access_url);
-			return Boolean.TRUE;
 		} catch (Exception e) {
 			System.out.println("【エラー】：モッピーアクセスメール獲得失敗");
-			return Boolean.FALSE;
 		}
 
 	}

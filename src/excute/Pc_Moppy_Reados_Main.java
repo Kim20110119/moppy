@@ -17,7 +17,7 @@ public class Pc_Moppy_Reados_Main {
 	public static void main(String[] args) {
 		Moppy_Reados reados = new Moppy_Reados();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			reados.execute(bean, Boolean.TRUE);
 		}
 		System.out.println("【モッピー】：クマクマ調査団終了。");

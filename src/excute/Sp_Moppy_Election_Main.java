@@ -17,7 +17,7 @@ public class Sp_Moppy_Election_Main {
 	public static void main(String[] args) {
 		Sp_Moppy_Election election = new Sp_Moppy_Election();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			election.execute(bean, Boolean.TRUE);
 		}
 		System.out.println("【モッピー】：（携帯版）クマクマ総選挙終了。");

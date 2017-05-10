@@ -96,10 +96,16 @@ public class Sp_Moppy_Reados extends Sp_Point {
 				return flag;
 			}
 			this.count();
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d_q_1){
+			}
 			return flag;
 		} catch (Exception e) {
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d_q_2){
+			}
 			System.out.println("【エラー】：クマクマ調査団失敗");
 			return flag;
 		}

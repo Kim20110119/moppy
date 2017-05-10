@@ -17,7 +17,7 @@ public class Pc_Moppy_Research_Main {
 		// モッピー：リサーチアンケート
 		Moppy_Research research = new Moppy_Research();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			for(int i = 0; i < 3; i++){
 				research.execute(bean, Boolean.TRUE);
 			}

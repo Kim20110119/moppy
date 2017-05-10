@@ -101,10 +101,16 @@ public class Moppy_Reados extends Point {
 				return flag;
 			}
 			this.count();
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			return flag;
 		} catch (Exception e) {
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d){
+			}
 			System.out.println("【エラー】：クマクマ調査団失敗");
 			flag = 1;
 			return flag;

@@ -87,10 +87,16 @@ public class Sp_Moppy_Ad_Enquete extends Sp_Point {
 			}else{
 				System.out.println("【エラー】：漫画アンケートURL取得失敗!");
 			}
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d_q_1){
+			}
 			return point_count;
 		} catch (Exception e) {
-			driver.quit();
+			try{
+				driver.quit();
+			}catch(Exception e_d_q_2){
+			}
 			System.out.println("【エラー】：漫画アンケート失敗");
 			return point_count;
 		}

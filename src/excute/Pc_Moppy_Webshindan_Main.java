@@ -17,7 +17,7 @@ public class Pc_Moppy_Webshindan_Main {
 	public static void main(String[] args) {
 		Moppy_Shindan moppy_Shindan = new Moppy_Shindan();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			moppy_Shindan.execute(bean, Boolean.TRUE);
 		}
 		System.out.println("【モッピー】：WEB診断終了。");

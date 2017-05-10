@@ -18,7 +18,7 @@ public class Pc_Moppy_Ad_EnqueteMain {
 		// モッピー：漫画アンケート
 		Moppy_Ad_Enquete enquete = new Moppy_Ad_Enquete();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			enquete.execute(bean, Boolean.TRUE);
 		}
 		System.out.println("漫画アンケート終了。獲得済みポイント");

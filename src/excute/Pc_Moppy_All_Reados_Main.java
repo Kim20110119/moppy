@@ -21,7 +21,7 @@ public class Pc_Moppy_All_Reados_Main {
 	// 【モッピー】：クマクマ調査団
 	public static void main(String[] args) {
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			System.out.println(bean.getMail()+"自動化開始");		
 			for(int i = 0; i < 10; i++){
 				// 「クマクマ調査団」(携帯)
@@ -60,11 +60,11 @@ public class Pc_Moppy_All_Reados_Main {
 	 *
 	 */
 	public static void wifiRestart() {
+		// Chromeドライバーをプロパティへ設定
+		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
+		// Chromeドライバー
+		WebDriver driver = new ChromeDriver();
 		try{
-			// Chromeドライバーをプロパティへ設定
-			System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
-			// Chromeドライバー
-			WebDriver driver = new ChromeDriver();
 			driver.get("http://admin:20110119Jjz@192.168.179.1/index.cgi/reboot_main");
 			driver.findElement(By.id("UPDATE_BUTTON")).click();
 			driver.switchTo().alert().accept();
@@ -72,6 +72,7 @@ public class Pc_Moppy_All_Reados_Main {
 			driver.switchTo().alert().accept();
 			driver.quit();
 		}catch (Exception e){
+			driver.quit();
 		}
 	}
 	

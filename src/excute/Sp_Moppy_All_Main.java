@@ -22,7 +22,7 @@ public class Sp_Moppy_All_Main {
 	// 【モッピー】：自動化
 	public static void main(String[] args) {
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			// 「漫画アンケート」(携帯)
 			Sp_Moppy_Ad_Enquete sp_enquete = new Sp_Moppy_Ad_Enquete();
 			sp_enquete.execute(bean, Boolean.TRUE);

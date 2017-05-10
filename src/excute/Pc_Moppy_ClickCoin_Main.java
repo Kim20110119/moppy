@@ -16,7 +16,7 @@ public class Pc_Moppy_ClickCoin_Main {
 		// モッピー：毎日バナークリック
 		Moppy_Click_Coin mcc = new Moppy_Click_Coin();
 		Account account = new Account();
-		for(AccountBean bean : account.execute()){
+		for(AccountBean bean : account.execute(args[0])){
 			mcc.execute(bean, Boolean.TRUE);
 		}
 		System.out.println("【モッピー】：毎日クリック終了。");
