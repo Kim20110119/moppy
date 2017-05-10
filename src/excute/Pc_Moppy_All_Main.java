@@ -68,8 +68,8 @@ public class Pc_Moppy_All_Main {
 		try{
 			driver.get("http://admin:20110119Jjz@192.168.179.1/index.cgi/reboot_main");
 			driver.findElement(By.id("UPDATE_BUTTON")).click();
-			driver.switchTo().alert().accept();
-			sleep(100000);
+			driver.switchTo().alert().accept();			
+			sleep(60000);
 			driver.switchTo().alert().accept();
 			driver.quit();
 		}catch (Exception e){

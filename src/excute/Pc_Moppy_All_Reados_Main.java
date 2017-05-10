@@ -31,7 +31,9 @@ public class Pc_Moppy_All_Reados_Main {
 					break;
 				}
 				if(sp_count > 1){
-					wifiRestart();
+					if(args[1].equals("1")){
+						wifiRestart();
+					}
 				}
 			}
 			for(int i = 0; i < 10; i++){
@@ -42,11 +44,15 @@ public class Pc_Moppy_All_Reados_Main {
 					break;
 				}
 				if(pc_count > 1){
-					wifiRestart();
+					if(args[1].equals("1")){
+						wifiRestart();
+					}
 				}
 				
 			}
-			wifiRestart();
+			if(args[1].equals("1")){
+				wifiRestart();
+			}
 		}
 		System.out.println("【モッピー】：「クマクマ調査団」自動化終了。");
 	}
@@ -68,7 +74,7 @@ public class Pc_Moppy_All_Reados_Main {
 			driver.get("http://admin:20110119Jjz@192.168.179.1/index.cgi/reboot_main");
 			driver.findElement(By.id("UPDATE_BUTTON")).click();
 			driver.switchTo().alert().accept();
-			sleep(100000);
+			sleep(60000);
 			driver.switchTo().alert().accept();
 			driver.quit();
 		}catch (Exception e){
