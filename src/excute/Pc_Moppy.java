@@ -19,12 +19,8 @@ public class Pc_Moppy extends Point  {
 	 * タブを閉じる
 	 * =================================================================================================================
 	 *
-	 * @param WebDriver
-	 *            driver
-	 * @param String
-	 *            originalHandle
-	 * @param By
-	 *            by
+	 * @param WebDriver driver
+	 * @param String originalHandle
 	 *
 	 * @author kimC
 	 *

@@ -6,9 +6,9 @@ import static common.constant.MoppyConstants.*;
 
 import org.openqa.selenium.By;
 
+import common.Point;
 import common.enquete.Column_Enquete;
 import common.enquete.Mini_Survey_Enquete;
-import excute.Pc_Moppy;
 
 /**
  * =====================================================================================================================
@@ -18,7 +18,7 @@ import excute.Pc_Moppy;
  * @author kimC
  *
  */
-public class Moppy_Enquete extends Pc_Moppy {
+public class Moppy_Enquete extends Point {
 
 	/** 「ga-answerBtn」 */
 	private static final String C_G_A = "ga-answerBtn";
@@ -37,6 +37,15 @@ public class Moppy_Enquete extends Pc_Moppy {
 	 * コンストラクタ
 	 */
 	public Moppy_Enquete() {
+		super.setImage();
+		// モッピー：ログイン画面
+		driver.get(PC_LOGIN_URL);
+		// モッピー：ログインメールアドレス
+		sendkeysByStr(getByName(V_MAIL), PC_LOGIN_MAIL);
+		// モッピー：ログインパスワード
+		sendkeysByStr(getByName(V_PASS), PC_LOGIN_PASSWORD);
+		// モッピー：ログインボタン
+		click(getByXpath(T_BUTTON, A_TYPE, V_SUBMIT));
 		// 「アンケート」
 		driver.get(PC_ENQUETE_URL);
 	}

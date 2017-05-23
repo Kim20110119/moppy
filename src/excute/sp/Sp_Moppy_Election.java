@@ -41,6 +41,7 @@ public class Sp_Moppy_Election extends Sp_Point {
 	 * コンストラクタ
 	 */
 	public Sp_Moppy_Election() {
+		super.setImage();
 	}
 
 	/**

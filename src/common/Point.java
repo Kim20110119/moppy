@@ -1,5 +1,6 @@
 package common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -29,11 +30,38 @@ public class Point {
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 		// Chromeドライバー
 		driver = new ChromeDriver();
-		this.setImage();
 		wait = new WebDriverWait(driver, 10);
 		executor = (JavascriptExecutor)driver;
 	}
-	
+
+	/**
+	 * =================================================================================================================
+	 * タブを閉じる
+	 * =================================================================================================================
+	 *
+	 * @param WebDriver driver
+	 * @param String originalHandle
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static String getUrlByTab(WebDriver driver, String originalHandle) {
+		String tab_url = StringUtils.EMPTY;
+		try {
+			for (String handle : driver.getWindowHandles()) {
+				if (!handle.equals(originalHandle)) {
+					driver.switchTo().window(handle);
+					tab_url = driver.getCurrentUrl();
+					return tab_url;
+				}
+			}
+			return tab_url;
+		} catch (Exception e) {
+			return tab_url;
+		}
+
+	}
+
 	/**
 	 * =================================================================================================================
 	 * Chromeの設定：すべての画像を表示しない

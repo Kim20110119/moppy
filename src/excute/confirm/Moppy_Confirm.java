@@ -70,6 +70,8 @@ public class Moppy_Confirm {
 				// Chromeドライバー
 				driver = new ChromeDriver();
 			}
+			// Chrome画像非表示設定
+			this.setImage();
 			// 「登録URL」
 			driver.get(PC_LOGIN_URL);
 			// 0.5秒待ち
@@ -88,8 +90,10 @@ public class Moppy_Confirm {
 				String point = driver.findElement(By.className("odometer-inside")).getText();
 				bean.setPoint(point.replaceAll("\n", ""));
 				outputList.add(bean);
-				// Wifiを再起動
-				this.wifiRestart();
+				if(i % 10 == 0 ){
+					// Wifiを再起動
+					this.wifiRestart();
+				}
 			}catch (Exception e){
 				System.out.println("【エラー】：" + bean.getMail()+"ログイン失敗！");
 			}
@@ -98,7 +102,6 @@ public class Moppy_Confirm {
 				driver.quit();
 			}catch(Exception e_q){
 			}
-			
 		}
 		// アカウント情報をEXCELで出力する
 		this.output_account();
@@ -152,7 +155,7 @@ public class Moppy_Confirm {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * クリック処理
 	 *
@@ -330,6 +333,24 @@ public class Moppy_Confirm {
 	 */
 	public By getByName(String name) {
 		return By.name(name);
+	}
+
+	/**
+	 * =================================================================================================================
+	 * Chromeの設定：すべての画像を表示しない
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public void setImage() {
+		try{
+			driver.get("chrome://settings-frame/content");
+			driver.findElements(By.name("images")).get(1).click();
+			driver.findElement(By.id("content-settings-overlay-confirm")).click();
+		}catch (Exception e){
+
+		}
 	}
 
 }

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import excute.Pc_Moppy;
+import common.Point;
 import excute.bean.AccountBean;
 
 
@@ -21,7 +21,7 @@ import excute.bean.AccountBean;
  * @author kimC
  *
  */
-public class Moppy_Election extends Pc_Moppy {
+public class Moppy_Election extends Point {
 	/** 「daily-points」 */
 	private static final String C_D_P = "daily-points";
 	/** 「クマクマ総選挙URL」 */
@@ -43,6 +43,9 @@ public class Moppy_Election extends Pc_Moppy {
 	 * コンストラクタ
 	 */
 	public Moppy_Election() {
+		super.setImage();
+		// モッピー：ログイン画面
+		driver.get(PC_LOGIN_URL);
 	}
 
 	/**

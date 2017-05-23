@@ -45,6 +45,9 @@ public class Moppy_Reados extends Point {
 	 * コンストラクタ
 	 */
 	public Moppy_Reados(){
+		super.setImage();
+		// モッピー：ログイン画面
+		driver.get(PC_LOGIN_URL);
 	}
 	/**
 	 * =================================================================================================================
@@ -146,7 +149,7 @@ public class Moppy_Reados extends Point {
 					if (Adsurvey_Enquete.execute(driver, bean)) {
 					}
 				}
-				
+
 			}else{
 				System.out.println("【エラー】：AdsurveyアンケートURL取得失敗!");
 			}
@@ -156,7 +159,7 @@ public class Moppy_Reados extends Point {
 			Adsurvey_Enquete.execute_restart(driver);
 		}
 	}
-	
+
 	/**
 	 * =================================================================================================================
 	 * クマクマ調査件数カウントする
@@ -178,7 +181,7 @@ public class Moppy_Reados extends Point {
 			System.out.println("【エラー】：`調査団件数取得失敗");
 		}
 	}
-	
+
 	/**
 	 * =================================================================================================================
 	 * クマクマ調査件数カウントする

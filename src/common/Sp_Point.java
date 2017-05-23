@@ -35,7 +35,6 @@ public class Sp_Point {
 		options.addArguments(
 				"--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
 		driver = new ChromeDriver(options);
-		this.setImage();
 		wait = new WebDriverWait(driver, 10);
 		executor = (JavascriptExecutor)driver;
 		// 画面サイズを指定する
@@ -59,7 +58,7 @@ public class Sp_Point {
 
 		}
 	}
-	
+
 	/**
 	 * クリック処理
 	 *

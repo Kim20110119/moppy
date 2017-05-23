@@ -40,6 +40,8 @@ public class Moppy_Ad_Enquete extends Point {
 	 * コンストラクタ
 	 */
 	public Moppy_Ad_Enquete() {
+		// モッピー：ログイン画面
+		driver.get(PC_LOGIN_URL);
 	}
 
 	/**

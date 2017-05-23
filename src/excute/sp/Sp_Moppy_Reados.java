@@ -43,6 +43,7 @@ public class Sp_Moppy_Reados extends Sp_Point {
 	 * コンストラクタ
 	 */
 	public Sp_Moppy_Reados(){
+		super.setImage();
 	}
 	/**
 	 * =================================================================================================================
@@ -140,7 +141,7 @@ public class Sp_Moppy_Reados extends Sp_Point {
 			Adsurvey_Enquete.execute_restart(driver);
 		}
 	}
-	
+
 	/**
 	 * =================================================================================================================
 	 * クマクマ調査件数カウントする
