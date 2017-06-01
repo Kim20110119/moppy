@@ -30,6 +30,8 @@ public class MoppyConstants {
 	public static final String PC_CLICK_COIN_URL = "http://pc.moppy.jp/cc/";
 	/** 【PC】:ポイントリサーチURL */
 	public static final String PC_POINT_RESEARCH_URL = "http://pc.moppy.jp/point_research/index.php";
+	/** 【PC】:ガチャURL */
+	public static final String PC_GACHA_URL = "http://pc.moppy.jp/pc_gacha/";
 	/** 【PC】:アンケートURL */
 	public static final String PC_ENQUETE_URL = "http://pc.moppy.jp/research/";
 	/** 【PC】:ゲームコンテンツURL */
@@ -54,7 +56,7 @@ public class MoppyConstants {
 	public static final String MAIL_ID = "moppy20110119";
 	/** 【PC】:使い捨てメールパスワード */
 	public static final String MAIL_PASS = "moppy20110119";
-	
+
 	/** 【PC】:富士TVURL */
 	public static final String FUJITV_REGISTER_URL = "http://pc.moppy.jp/ad/detail.php?m_id=322664";
 
