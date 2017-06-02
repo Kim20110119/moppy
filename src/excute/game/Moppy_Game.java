@@ -93,8 +93,12 @@ public class Moppy_Game extends Point {
 			Thread.sleep(1500);
 			// 「広告を閉じる」
 			ad_close(driver);
-			// 「`広告をクリック」
-			click(getByXpath(T_A, A_HREF, "/pc_gacha/ad_click.php"));
+			// 1.5秒待ち
+			Thread.sleep(1500);
+			// 「`広告をクリック
+			click(getByXpath(T_IMG, A_ALT, "バナー"));
+			// 1.5秒待ち
+			Thread.sleep(1500);
 			driver.quit();
 			return point_count;
 		} catch (Exception e) {
