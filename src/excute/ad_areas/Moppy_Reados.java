@@ -1,5 +1,6 @@
 package excute.ad_areas;
 
+import static common.Common.netCheck;
 import static common.constant.CommonConstants.*;
 import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
@@ -155,6 +156,8 @@ public class Moppy_Reados extends Point {
 			}
 
 		} catch (Exception e) {
+			// ネットチェック
+			netCheck(driver);
 			System.out.println("【エラー】：Adsurveyアンケート回答失敗!");
 			Adsurvey_Enquete.execute_restart(driver);
 		}

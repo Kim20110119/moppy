@@ -1,5 +1,6 @@
 package excute.sp;
 
+import static common.Common.netCheck;
 import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
 
@@ -93,6 +94,8 @@ public class Sp_Moppy_Ad_Enquete extends Sp_Point {
 			}
 			return point_count;
 		} catch (Exception e) {
+			// ネットチェック
+			netCheck(driver);
 			try{
 				driver.quit();
 			}catch(Exception e_d_q_2){

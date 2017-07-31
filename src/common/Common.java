@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author お客様
@@ -152,6 +154,40 @@ public class Common {
 		return "【" + site + "】：" + item + "終了。獲得ずみポイント：" + point;
 	}
 
+	/**
+	 * =================================================================================================================
+	 * ネット繋ぎチェック
+	 * =================================================================================================================
+	 *
+	 * @author kimC
+	 *
+	 */
+	public static void netCheck(WebDriver driver) {
+		// メッセージ
+		String message = StringUtils.EMPTY;
+		try{
+			message = driver.findElement(By.id("main-message")).findElement(By.tagName("h1")).getText();
+		}catch (Exception e){
+		}
+		if(message.equals("このサイトにアクセスできません")){
+			sleep(100000);
+		}
+	}
+	
+	/**
+	 * sleep処理
+	 *
+	 * @param long ミリ秒数
+	 * @author kimC
+	 */
+	public static void sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	/**
 	 * =====================================================================================================================
 	 * 都道府県一覧を取得する

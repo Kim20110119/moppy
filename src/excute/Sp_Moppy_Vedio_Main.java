@@ -2,7 +2,7 @@ package excute;
 
 import excute.bean.AccountBean;
 import excute.excel.Account;
-import excute.sp.Sp_Moppy_Ad_Enquete;
+import excute.sp.Sp_Moppy_Vedio;
 
 /**
  * =====================================================================================================================
@@ -12,16 +12,16 @@ import excute.sp.Sp_Moppy_Ad_Enquete;
  * @author kimC
  *
  */
-public class Sp_Moppy_Ad_EnqueteMain {
+public class Sp_Moppy_Vedio_Main {
 
 	public static void main(String[] args) {
 		// モッピー：漫画アンケート
 		Account account = new Account();
 		for(AccountBean bean : account.execute(args[0])){
-			Sp_Moppy_Ad_Enquete enquete = new Sp_Moppy_Ad_Enquete();
-			enquete.execute(bean, Boolean.TRUE);
+			Sp_Moppy_Vedio vedio = new Sp_Moppy_Vedio();
+			vedio.execute(bean, Boolean.TRUE);
 		}
-		System.out.println("漫画アンケート終了。獲得済みポイント");
+		System.out.println("動画完了");
 	}
 
 }

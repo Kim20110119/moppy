@@ -81,6 +81,7 @@ public class Moppy_Click_Coin  extends Point {
 			driver.quit();
 			return point_count/10;
 		}catch (Exception e){
+			netCheck(driver);
 			driver.quit();
 			System.out.println("【エラー】：毎日クリック失敗");
 			return point_count;

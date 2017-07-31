@@ -1,12 +1,8 @@
 package excute.ad_areas;
 
 import static common.Common.netCheck;
-import static common.constant.CommonConstants.*;
 import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
-
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.By;
 
 import common.Point;
 import common.enquete.Manga_enquete;
@@ -20,9 +16,7 @@ import excute.bean.AccountBean;
  * @author kimC
  *
  */
-public class Moppy_Ad_Enquete extends Point {
-	/** 「daily-points」 */
-	private static final String C_D_P = "daily-points";
+public class Moppy_Vedio extends Point {
 	/** 「漫画アンケートURL」 */
 	String enquete_link;
 	/** 「獲得ポイント」 */
@@ -40,7 +34,7 @@ public class Moppy_Ad_Enquete extends Point {
 	/**
 	 * コンストラクタ
 	 */
-	public Moppy_Ad_Enquete() {
+	public Moppy_Vedio() {
 		// モッピー：ログイン画面
 		driver.get(PC_LOGIN_URL);
 	}
@@ -70,32 +64,7 @@ public class Moppy_Ad_Enquete extends Point {
 			}
 			// 「CMくじ」
 			driver.get(PC_CM_URL);
-			// 「漫画アンケートURL」取得する
-			enquete_link = driver.findElement(By.className(C_D_P)).findElements(By.tagName(T_A)).get(INT_5)
-					.getAttribute(A_HREF);
-			if (StringUtils.isNoneEmpty(enquete_link)) {
-				// 「漫画アンケート画面」
-				driver.get(enquete_link);
-				enquete_count = driver.findElements(By.partialLinkText("回答する")).size();
-				if(enquete_count < end){
-					end = enquete_count;
-				}
-				for(int i = start; i < end; i++){
-					String enquete_url = driver.findElements(By.partialLinkText("回答する")).get(0).getAttribute(A_HREF);
-					driver.get(enquete_url);
-					start();
-					// 「漫画アンケート画面」
-					driver.get(enquete_link);
-				}
-				// 獲得ポイントカウント
-				point_count += 10;
-			} else {
-				System.out.println("【エラー】：漫画アンケートURL取得失敗");
-			}
-			try{
-				driver.quit();
-			}catch(Exception e_d){
-			}
+			driver.quit();
 			return point_count;
 		} catch (Exception e) {
 			// ネットチェック

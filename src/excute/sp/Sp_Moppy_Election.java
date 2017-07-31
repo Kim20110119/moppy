@@ -114,6 +114,8 @@ public class Sp_Moppy_Election extends Sp_Point {
 			}
 			return point_count;
 		} catch (Exception e) {
+			// ネットチェック
+			netCheck(driver);
 			try{
 				driver.quit();
 			}catch(Exception e_d){

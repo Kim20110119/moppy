@@ -4,59 +4,39 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import excute.ad_areas.Moppy_Reados;
-import excute.sp.Sp_Moppy_Reados;
 import excute.bean.AccountBean;
 import excute.excel.Account;
+import excute.game.Moppy_Game;
+import excute.sp.Sp_Moppy_Game;
 
 /**
  * =====================================================================================================================
- * 【モッピー】：クマクマ調査団
+ * モッピー：ガチャ
  * =====================================================================================================================
  *
  * @author kimC
  *
  */
-public class Pc_Moppy_All_Reados_Main {
-	// 【モッピー】：クマクマ調査団
+public class Pc_Moppy_All_Game_Main {
+
 	public static void main(String[] args) {
 		Account account = new Account();
+		int i = 1;
 		for(AccountBean bean : account.execute(args[0])){
-			System.out.println(bean.getMail()+"自動化開始");		
-			for(int i = 0; i < 10; i++){
-				// 「クマクマ調査団」(携帯)
-				Sp_Moppy_Reados sp_reados = new Sp_Moppy_Reados();
-				int sp_count = sp_reados.execute(bean, Boolean.TRUE);
-				if(sp_count == 0){
-					break;
-				}
-				if(sp_count > 1){
-					if(args[1].equals("1")){
-						wifiRestart();
-					}
-				}
-			}
-			for(int i = 0; i < 10; i++){
-				// 「クマクマ調査団」
-				Moppy_Reados reados = new Moppy_Reados();
-				int pc_count = reados.execute(bean, Boolean.TRUE);
-				if(pc_count == 0){
-					break;
-				}
-				if(pc_count > 1){
-					if(args[1].equals("1")){
-						wifiRestart();
-					}
-				}
-				
-			}
+			Moppy_Game game = new Moppy_Game();
+			game.execute(bean, Boolean.TRUE);
+			Sp_Moppy_Game sp_game = new Sp_Moppy_Game();
+			sp_game.execute(bean, Boolean.TRUE);
 			if(args[1].equals("1")){
-				wifiRestart();
+				if(i % 10 == 0){
+					wifiRestart();
+				}
 			}
+			i++;
 		}
-		System.out.println("【モッピー】：「クマクマ調査団」自動化終了。");
+		System.out.println("【モッピー】：ガチャ終了。");
 	}
-	
+
 	/**
 	 * =================================================================================================================
 	 * Wifi再起動
@@ -73,12 +53,11 @@ public class Pc_Moppy_All_Reados_Main {
 		try{
 			driver.get("http://admin:20110119Jjz@192.168.179.1/index.cgi/reboot_main");
 			driver.findElement(By.id("UPDATE_BUTTON")).click();
-			driver.switchTo().alert().accept();
+			driver.switchTo().alert().accept();			
 			sleep(100000);
 			driver.switchTo().alert().accept();
 			driver.quit();
 		}catch (Exception e){
-			sleep(100000);
 			driver.quit();
 		}
 	}
@@ -96,4 +75,6 @@ public class Pc_Moppy_All_Reados_Main {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	
 }

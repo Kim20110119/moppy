@@ -97,6 +97,8 @@ public class Moppy_Research extends Point {
 			}
 			return point_count;
 		} catch (Exception e) {
+			// ネットチェック
+			netCheck(driver);
 			try{
 				driver.quit();
 			}catch(Exception e_d){

@@ -92,7 +92,7 @@ public class Moppy_Confirm {
 				outputList.add(bean);
 				if(i % 10 == 0 ){
 					// Wifiを再起動
-					this.wifiRestart();
+//					this.wifiRestart();
 				}
 			}catch (Exception e){
 				System.out.println("【エラー】：" + bean.getMail()+"ログイン失敗！");

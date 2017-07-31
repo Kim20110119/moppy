@@ -1,5 +1,6 @@
 package excute.sp;
 
+import static common.Common.netCheck;
 import static common.constant.CommonConstants.*;
 import static common.constant.HtmlConstants.*;
 import static common.constant.MoppyConstants.*;
@@ -38,6 +39,9 @@ public class Sp_Moppy_Reados extends Sp_Point {
 	int end = 30;
 	/** 「アカウント情報」 */
 	AccountBean bean = new AccountBean();
+	/** 「break_flag」 */
+	boolean break_flag = false;
+
 
 	/**
 	 * コンストラクタ
@@ -89,6 +93,9 @@ public class Sp_Moppy_Reados extends Sp_Point {
 					start();
 					// 「クマクマ調査団画面」
 					driver.get(reados_url);
+					if(break_flag){
+						break;
+					}
 				}
 			}else{
 				System.out.println("【エラー】：クマクマ調査団URL取得失敗!");
@@ -103,6 +110,8 @@ public class Sp_Moppy_Reados extends Sp_Point {
 			}
 			return flag;
 		} catch (Exception e) {
+			// ネットチェック
+			netCheck(driver);
 			try{
 				driver.quit();
 			}catch(Exception e_d_q_2){
@@ -129,6 +138,19 @@ public class Sp_Moppy_Reados extends Sp_Point {
 			if(StringUtils.isNotEmpty(enquete_url)){
 				// 「該当するAdsurveyアンケート」へ遷移する
 				driver.get(enquete_url);
+				String message = StringUtils.EMPTY;
+				try{
+					message = driver.findElement(By.className("attention_txt")).getText();
+				}catch (Exception m_e){
+				}
+				
+				if(message.equals("現在、アクセス過多のため一時的に回答を制限しております。\nご迷惑をおかけして大変申し訳ございませんが、続けて回答したい場合は以下の認証を行ってください。")){
+					break_flag = true;
+				}else{
+					// 「Adsurveyアンケート回答」
+					if (Adsurvey_Enquete.execute(driver, bean)) {
+					}
+				}
 				// 「Adsurveyアンケート回答」
 				if (Sp_Adsurvey_Enquete.execute(driver, bean)) {
 				}
